@@ -25,14 +25,14 @@ require('../include/db_connect.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $dbc->real_escape_string($_POST['email']);
     $password = $_POST['password'];
-
-       // Check if email is provided
-    if (empty($email)) {
+    if (empty($email) && empty($password)) {
+        $errorMessage = "Please fill in all the fields";
+    } if (empty($email)) {
         echo "Please fill in the email field";
         exit();
     }
        // Check if email is provided
-    if (empty($password)) {
+   if (empty($password)) {
         echo "Please fill in the password field";
         exit();
     }
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Note: No password hashing during login
         if ($password === $rowAdmin['password']) {
             $_SESSION['admin'] = $rowAdmin;
-            header('Location: http://localhost/FInal%20test%201/admins/dashbord.php');
+            header('Location: http://localhost/FYP%202.0/admins/indexAdmin.php');
             exit();
         } else {
             echo "Invalid password";
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Note: No password hashing during login
         if ($password === $rowUser['password']) {
             $_SESSION['user'] = $rowUser;
-            header('Location: http://localhost/final%20test%201/Start%20Website/');
+            header('Location: http://localhost/FYP%202.0/startWeb/');
             exit();
         } else {
             echo "Invalid password";

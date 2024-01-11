@@ -10,6 +10,7 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
    <!-- Custom CSS file link  -->
+   <link rel="stylesheet" href="../style/sign.css">
 
 </head>
 <body>
@@ -30,7 +31,7 @@
         <p><input type="submit" name="submit" value="Register" /></p>
         <input type="hidden" name="submitted" value="TRUE" />
       <p>Already have an account?</p>
-      <a href="../signup_login/login.php" class="option-btn">Login Now</a>
+      <a href="../log_folder/login.php" class="option-btn">Login Now</a>
    </form>
 
 </section>

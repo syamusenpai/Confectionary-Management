@@ -9,6 +9,6 @@ $_SESSION = array();
 session_destroy();
 
 // Redirect to the login page after logout
-header('Location: http://localhost/final%20test%201/Start%20Website/index.php');
+header('Location: http://localhost/FYP%202.0/startWeb/');
 exit();
 ?>
