@@ -139,7 +139,7 @@ if ($resultAdmins && $resultUsers) {
                 <?php
                 foreach ($rows as $row) {
                     $id = $row["id"];
-                    $nameOrUsername = $row["username"];
+                    $username = $row["username"];
                     $email = $row["email"];
                     $phone_number = $row["phone_number"];
                     $role = $row["role"];
@@ -152,7 +152,7 @@ if ($resultAdmins && $resultUsers) {
                 ?>
 
                     <tr>
-                        <td><?php echo $nameOrUsername; ?></td>
+                        <td><?php echo $username; ?></td>
                         <td><?php echo $email; ?></td>
                         <td><?php echo $phone_number; ?></td>
                         <td><?php echo $role; ?></td>
@@ -166,7 +166,7 @@ if ($resultAdmins && $resultUsers) {
             </table>
             <br>
             <br>
-            <a href="admin.php"><center>[Back to admin main]</center></a>
+            <a href="Admin_dashbord.php"><center>[Back to admin main]</center></a>
             <script>
                 function confirmation() {
                     return confirm("Are you sure you want to delete this profile?");
@@ -179,7 +179,7 @@ if ($resultAdmins && $resultUsers) {
                     table = document.getElementById("profilesTable");
                     tr = table.getElementsByTagName("tr");
                     select = document.getElementById("filter");
-                    filterRole = select.value.toUpperCase();
+                    filterRole = select.value.toUpperCase(); // Corrected toUpperCase
 
                     for (i = 1; i < tr.length; i++) {
                         td = tr[i].getElementsByTagName("td");

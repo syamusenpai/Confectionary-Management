@@ -15,7 +15,7 @@ if (isset($_POST['upload'])) {
     $kuihPrice = mysqli_real_escape_string($dbc, $_POST['kuihPrice']);
     $kuihDetails = mysqli_real_escape_string($dbc, $_POST['kuihDetails']);
     $quantity = mysqli_real_escape_string($dbc, $_POST['quantity']);
-    $categoryId = mysqli_real_escape_string($dbc, $_POST['category']);
+    $selectedCategories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
     $uploadedImages = [];
     for ($i = 1; $i <= 3; $i++) {
@@ -42,9 +42,11 @@ if (isset($_POST['upload'])) {
 
     $lastProductId = mysqli_insert_id($dbc);
 
-    $sqlMapping = "INSERT INTO product_category_mapping (product_id, category_id) 
-                   VALUES ('$lastProductId', '$categoryId')";
-    mysqli_query($dbc, $sqlMapping);
+    foreach ($selectedCategories as $categoryId) {
+        $sqlMapping = "INSERT INTO product_category_mapping (product_id, category_id) 
+                       VALUES ('$lastProductId', '$categoryId')";
+        mysqli_query($dbc, $sqlMapping);
+    }
 
     if (empty($msg)) {
         $msg = "Kuih information uploaded successfully";
@@ -55,9 +57,10 @@ if (isset($_POST['upload'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Add Kuih info</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
 </head>
 <body>
     <br>
@@ -65,11 +68,10 @@ if (isset($_POST['upload'])) {
     <hr>
     <br>
 
-   <!-- Display success message -->
-<?php if (!empty($msg)) : ?>
-    <div style="color: green;"><?php echo $msg; ?></div>
-<?php endif; ?>
-
+    <!-- Display success message -->
+    <?php if (!empty($msg)) : ?>
+        <div style="color: green;"><?php echo $msg; ?></div>
+    <?php endif; ?>
 
     <div class="fr">
         <form name="insert" method="post" action="addKuih.php" enctype="multipart/form-data" onsubmit="return validateForm()">
@@ -99,12 +101,14 @@ if (isset($_POST['upload'])) {
 
             <!-- Add this code inside your form -->
             <div>
-                <label><font face="verdana">Select Category: </label>
-                <select name="category" class="style1">
+                <label><font face="verdana">Select Categories: </label>
+                <select name="categories[]" class="style1 form-control" multiple id="categories">
                     <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                    <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
                     <?php endforeach; ?>
                 </select>
+
+                <a href="addCategory.php"><center>[Add Category]</center></a>
             </div>
 
             <br>
@@ -116,12 +120,29 @@ if (isset($_POST['upload'])) {
         </form>
     </div>
     <br><br>
-    <a href="kuih.php"><center>[Back to Kuih page]</center></a>
-</body>
-</html>
-<script>
-function validateForm() {
-    var a = document.forms["insert"]["image_1"].value;
+    <a href="Admin_dashbord.php"><center>[Back to Kuih page]</center></a>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+    <script>
+        new MultiSelectTag('categories', {
+            rounded: true,
+            shadow: true,
+            placeholder: 'Search',
+            
+            tagColor: {
+                textColor: '#327b2c',
+                borderColor: '#92e681',
+                bgColor: '#eaffe6',
+            }
+            
+        });
+    </script>
+
+    <script>
+        function validateForm() {
+            var a = document.forms["insert"]["image_1"].value;
     var b = document.forms["insert"]["kuihName"].value;
     var c = document.forms["insert"]["kuihPrice"].value;
     var d = document.forms["insert"]["kuihDetails"].value;
@@ -165,8 +186,8 @@ function validateForm() {
     if (f == "") {
         document.getElementById("check").innerHTML = "*Please select a category";
         return false;
-    }
-
-    return true;
-}
-</script>
+    }            return true;
+        }
+    </script>
+</body>
+</html>

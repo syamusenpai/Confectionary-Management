@@ -20,7 +20,9 @@ if (!$row) {
 $username = $row["username"];
 $firstname = $row["first_name"];
 $lastname = $row["last_name"];
-$role = $row["role"];
+$email = $row["email"];
+$phone_number = $row["phone_number"];
+
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +47,9 @@ $role = $row["role"];
             <form name="editForm" method="post" onsubmit="return validateForm()" action="updateUser.php">
 
                 <tr>
-                    <td colspan="2" align="center"><h3>Edit User Profile</h3></td>
+                    <td colspan="2" align="center">
+                        <h3>Edit User Profile</h3>
+                    </td>
                 </tr>
                 <tr>
                     <td align="right">First name:</td>
@@ -60,13 +64,12 @@ $role = $row["role"];
                     <td align="left"><input type="text" name="username" value="<?php echo $username ?>"></td>
                 </tr>
                 <tr>
-                    <td align="right">Role:</td>
-                    <td align="left">
-                        <select name="role">
-                            <option value="user" <?php echo ($role == 'user') ? 'selected' : ''; ?>>User</option>
-                            <option value="admin" <?php echo ($role == 'admin') ? 'selected' : ''; ?>>Admin</option>
-                        </select>
-                    </td>
+                    <td align="right">Email:</td>
+                    <td align="left"><input type="email" name="email" value="<?php echo $email ?>"></td>
+                </tr>
+                <tr>
+                    <td align="right">Phone number:</td>
+                    <td align="left"><input type="text" name="phone_number" value="<?php echo $phone_number ?>"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">

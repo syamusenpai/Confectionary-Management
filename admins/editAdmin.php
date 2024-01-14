@@ -1,28 +1,40 @@
 <?php
-include("../include/db_connect.php");
+    // Include database connection
+    include('../include/db_connect.php');
 
-$idURL = $_GET['id'];
+    // Start the session
+    session_start();
 
-if (!$idURL) {
-    echo "Invalid or missing profile ID";
-    exit;
-}
+    // Check if the admin is logged in and set the username in the session
+    if (isset($_SESSION['admin']['id'])) {
+        $adminID = $_SESSION['admin']['id'];
 
-$query = "SELECT * FROM admins WHERE id = '$idURL'";
-$result = mysqli_query($dbc, $query) or die("Could not fetch admin data");
-$row = mysqli_fetch_assoc($result);
+        // Fetch admin data based on the ID from the session
+        $query = "SELECT * FROM admins WHERE id = ?";
+        $stmt = $dbc->prepare($query);
+        $stmt->bind_param("i", $adminID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $adminData = $result->fetch_assoc();
 
-if (!$row) {
-    echo "Admin profile not found";
-    exit;
-}
+        // Check if admin data is found
+        if (!$adminData) {
+            echo "Admin profile not found";
+            exit;
+        }
 
-$username = $row["name"];
-$firstname = $row["first_name"];
-$lastname = $row["last_name"];
-$role = $row["role"];
+        // Extract admin details
+        $username = $adminData["name"];
+        $firstname = $adminData["first_name"];
+        $lastname = $adminData["last_name"];
+        $email = $adminData["email"];
+        $password = $adminData["password"];
+    } else {
+        // Redirect to the login page if not logged in
+        header("Location: login.php");
+        exit();
+    }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,13 +69,12 @@ $role = $row["role"];
     <td align="left"><input type="text" name="username" value="<?php echo $username ?>"></td>
 </tr>
 <tr>
-    <<td align="right">Role:</td>
-                    <td align="left">
-                        <select name="role">
-                            <option value="user" <?php echo ($role == 'user') ? 'selected' : ''; ?>>User</option>
-                            <option value="admin" <?php echo ($role == 'admin') ? 'selected' : ''; ?>>Admin</option>
-                        </select>
-                    </td>
+    <td align="right">Email:</td>
+    <td align="left"><input type="text" name="email" value="<?php echo $email?>"></td>
+</tr>
+<tr>
+    <td align="right">Password:</td>
+    <td align="left"><input type="text" name="password" value="<?php echo $password ?>"></td>
 </tr>
 <tr>
     <td colspan="2" align="center">
@@ -82,7 +93,7 @@ $role = $row["role"];
 </div>
 <br>
 <br>
-<a href="admin.php"><center>[Back to admin page]</center></a>
+<a href="Admin_dashbord.php"><center>[Back to admin page]</center></a>
 
 
 </body>

@@ -92,6 +92,7 @@
         <tr style="background-color: #ffea6b;">
             <th style="width: 90px;">Image</th>
             <th style="width: 200px;">Kuih Name</th>
+            <th style="width: 200px;">Quantity</th>
             <th style="width: 80px;">Price</th>
             <th style="width: 60px;"></th>
         </tr>
@@ -108,12 +109,14 @@
                 $productId = $row["id"];
                 $image = $row["image_01"];
                 $kuihName = $row["name"];
+                $quantity = $row["quantity"];
                 $kuihPrice = $row["price"];
 
                 ?>
                 <tr>
                     <td><?php echo '<img src="../img/', $image, '" >'; ?></td>
                     <td><?php echo $kuihName; ?></td>
+                    <td><?php echo $quantity; ?></td>
                     <td>RM<?php echo $kuihPrice; ?></td>
                     <td>
                         <a href="viewKuih.php?kuihId=<?php echo $productId; ?>" style="color:black;">
@@ -133,6 +136,6 @@
     <div class="btn"><a href="addKuih.php"><button class="edit-btn">Add Kuih Info</button></a></div>
     <br>
     <br>
-    <a href="admin.php"><center>[Back to Admin Page]</center></a>
+    <a href="Admin_dashbord.php"><center>[Back to Admin Page]</center></a>
 </body>
 </html>

@@ -40,7 +40,7 @@
                 // If user is not logged in, show signup/login links
                 echo '<div class="signup-login">';
                 echo '<a href="http://localhost/final%20test%201/signup_login/signup.php">Signup</a> | ';
-                echo '<a href="http://localhost/final%20test%201/signup_login/login.php">Login</a>';
+                echo '<a href="http://localhost/FYP%202.0/signup_login/login.php">Login</a>';
                 echo '</div>';
             }
             ?>
@@ -93,7 +93,7 @@
 
             </div>
         </div>
-            <script src="../edit/script.js"></script>
+            <script src="../style/style.js"></script>
 
         <script>
             
