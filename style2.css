@@ -1,15 +1,7 @@
 /*	Reset & General
 ---------------------------------------------------------------------- */
-* { margin: 0px; padding: 0px; }
-body {
-	font-family: "Open Sans", sans-serif; 
-}
-#wrapper{
-	overflow: hidden;
-	height: 1153px;
-	width: 1643px;
-	background:#fff;
-}
+
+
 #header{
 	height:92px; 
 	border-bottom:1px solid #eee;
@@ -20,6 +12,7 @@ body {
 	float:left;
 	margin-right:30px;	
 }
+
 #header li a{
 	font-weight:700;
 	color:#333;
@@ -28,7 +21,7 @@ body {
 	text-transform:uppercase;
 	letter-spacing:1px;
 }
-#headerli a:hover{
+#header li a:hover{
 	color:#000;
 	cursor:pointer;
 }
@@ -360,6 +353,7 @@ div.large .make3D{
 	color:#5ff7d2;
 	font-size:22px;
 	font-weight:600;
+    
 }
 .image_overlay{
 	position:absolute;
