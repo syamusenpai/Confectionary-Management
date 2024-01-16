@@ -5,7 +5,7 @@
   <title>Add to Cart Interaction Example</title>
   <link rel="stylesheet" href="../style/style2.css">
   <link rel="stylesheet" type="text/css" href="../style/style.css">
-
+  <?php include '../include/user_header.php'; ?>
 </head>
 <body>
 <!-- partial:index.partial.html -->
@@ -21,7 +21,7 @@
 	CHECKOUT
 </div>
 <div id="header">	
-<?php include './include/user_header.php'; ?>
+
 
 </div>
 
@@ -54,14 +54,17 @@
     
 </div>
 <?php
-// Database connection parameters
-DEFINE ('DB_USER', 'root');
-DEFINE ('DB_PASSWORD', '');
-DEFINE ('DB_HOST', 'localhost');
-DEFINE ('DB_NAME', 'aneka_2.0');
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "aneka_2.0";
 
-// Create connection
-$dbc = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+$dbc = new mysqli($servername, $username, $password, $dbname);
+
+// Check the connection
+if ($dbc->connect_error) {
+    die("Connection failed: " . $dbc->connect_error);
+}
 
 $query = "SELECT * FROM products";
 $result = mysqli_query($dbc
@@ -83,7 +86,7 @@ $result = mysqli_query($dbc
                         <button class="add-cart-large">Add To Cart</button>                          
                     </div>
                     <div class="row-img">
-                        <img src="./img/<?php echo $row['image_01']; ?>" alt="<?php echo $row['name']; ?>">
+                        <img src="../img/<?php echo $row['image_01']; ?>" alt="<?php echo $row['name']; ?>">
                     </div>
                 </div>
             </div>
