@@ -55,7 +55,7 @@ class LoginHandler
          // Note: No password hashing during login
          if ($password === $rowUser['password']) {
              $_SESSION['user'] = $rowUser;
-             header('Location: http://localhost/FYP%202.0/startWeb/');
+             header('Location: http://localhost/final%20test%201/startWeb/');
              exit();
          } else {
              $errorMessage = "Invalid password";

@@ -21,7 +21,7 @@
 	CHECKOUT
 </div>
 <div id="header">	
-<?php include './include/user_header.php'; ?>
+<?php include '../include/user_header.php'; ?>
 
 </div>
 
