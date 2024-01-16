@@ -82,11 +82,12 @@ $result = mysqli_query($dbc
                     <div class="row-text">
                         <h3><?php echo $row['name']; ?></h3>
                         <h6>Description:<br><?php echo $row['details']; ?></h6>
-                        <span class="product_price"><?php echo $row['price']; ?></span>
+                        <span class="product_price">RM<?php echo $row['price']; ?></span>
                         <button class="add-cart-large">Add To Cart</button>                          
                     </div>
                     <div class="row-img">
                         <img src="../img/<?php echo $row['image_01']; ?>" alt="<?php echo $row['name']; ?>">
+
                     </div>
                 </div>
             </div>
@@ -99,6 +100,7 @@ $result = mysqli_query($dbc
     // Close the database connection
     mysqli_close($dbc);
     ?>
+    
 </div>
 
 
