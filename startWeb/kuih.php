@@ -1,71 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aneka Rasa-Shop</title>
-    <link rel="stylesheet" type="text/css" href="../style/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;0,900;1,500;1,800&display=swap" rel="stylesheet">
-    
-    
+  <meta charset="UTF-8">
+  <title>Add to Cart Interaction Example</title>
+  <link rel="stylesheet" href="./style/style2.css">
+  <link rel="stylesheet" type="text/css" href="./style/style.css">
+
 </head>
-
 <body>
-    <?php include '../include/user_header.php'; ?>
-    <?php include '../include/db_connect.php'; ?>
+<!-- partial:index.partial.html -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+<div id="wrapper">
+<div class="cart-icon-top">
+</div>
 
-    <section>
-        <div class="middle-text" style="text-align: center; display: flex; justify-content: center; align-items: center;">
-            <h2>Products from the Database</h2>
-        </div>
+<div class="cart-icon-bottom">
+</div>
 
-        <div class="feature-content">
-            <?php
-            // Fetch products from the database
-            $sql = "SELECT * FROM products";
-            $result = $dbc->query($sql);
+<div id="checkout">
+	CHECKOUT
+</div>
+<div id="header">	
+<?php include './include/user_header.php'; ?>
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    ?>
-                    <div class="row">
-                        <div class="main-row">
-                            <div class="row-text">
-                                <h3><?php echo $row['name']; ?></h3>
-                                <h6>Description:<br><?php echo $row['details']; ?></h6>
-                                <h3>RM <?php echo $row['price']; ?></h3>
-                                <a href="#" class="row-btn">Add it to Cart !</a>
-                            </div>
-                            <div class="row-img">
-                                <img src="../img/<?php echo $row['image_01']; ?>" alt="<?php echo $row['name']; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <?php
-                }
-            } else {
-                echo "No products found.";
-            }
+</div>
 
-            // Close the database connection
-            $dbc->close();
+
+
+<div id="sidebar">
+	<h3>CART</h3>
+    <div id="cart">
+    	<span class="empty">No items in cart.</span>       
+    </div>
+    
+    <h3>CATEGORIES</h3>
+    <div class="checklist categories">
+    	<ul>
+        	<li><a href=""><span></span>New Arivals</a></li>
+            <li><a href=""><span></span>Accesories</a></li>
+            <li><a href=""><span></span>Bags</a></li>
+            <li><a href=""><span></span>Dressed</a></li>
+            <li><a href=""><span></span>Jackets</a></li>
+            <li><a href=""><span></span>jewelry</a></li>
+            <li><a href=""><span></span>Shoes</a></li>
+            <li><a href=""><span></span>Shirts</a></li>
+            <li><a href=""><span></span>Sweaters</a></li>
+            <li><a href=""><span></span>T-shirts</a></li>
+        </ul>
+    </div>
+    
+    
+ 
+    
+</div>
+<?php
+// Database connection parameters
+DEFINE ('DB_USER', 'root');
+DEFINE ('DB_PASSWORD', '');
+DEFINE ('DB_HOST', 'localhost');
+DEFINE ('DB_NAME', 'aneka_2.0');
+
+// Create connection
+$dbc = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+$query = "SELECT * FROM products";
+$result = mysqli_query($dbc
+, $query);
+?>
+
+
+<div class="feature-content">
+    <?php
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
             ?>
-        </div>
-    </section>
+            <div class="row">
+                <div class="main-row">
+                    <div class="row-text">
+                        <h3><?php echo $row['name']; ?></h3>
+                        <h6>Description:<br><?php echo $row['details']; ?></h6>
+                        <span class="product_price"><?php echo $row['price']; ?></span>
+                        <button class="add-cart-large">Add To Cart</button>                          
+                    </div>
+                    <div class="row-img">
+                        <img src="./img/<?php echo $row['image_01']; ?>" alt="<?php echo $row['name']; ?>">
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+    } else {
+        echo "No products found.";
+    }
 
-    <!-- Back button -->
-    <center>
-        <div class="btn">
-            <a href="index.php" class="btn-back">Back to Home</a>
-        </div>
-    </center>
+    // Close the database connection
+    mysqli_close($dbc);
+    ?>
+</div>
 
-    <!-- Include your script link here -->
+
+ 
+</div>
+</div>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- partial -->
+  <script  src="./style/style2.js"></script>
+
 </body>
 </html>

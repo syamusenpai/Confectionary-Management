@@ -86,8 +86,6 @@
         <div class="header-left">
         </div>
         <div class="header-right">
-          <span class="material-icons-outlined">notifications</span>
-          <span class="material-icons-outlined">email</span>
           <div class="dropdown">
           <span class="material-icons-outlined">account_circle</span><p>
           <div class="dropdown-content">
@@ -112,27 +110,27 @@
 
         <ul class="sidebar-list">
           <li class="sidebar-list-item">
-            <a href="http://localhost/FYP%202.0/admins/Admin_dashbord.php" target="_blank">
+            <a href="http://localhost/FYP%202.0/admins/Admin_dashbord.php"">
               <span class="material-icons-outlined">dashboard</span> Dashboard
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/FYP%202.0/startWeb/" target="_blank">
+            <a href="http://localhost/FYP%202.0/startWeb/"">
             <span class="material-icons-outlined">store</span> Store
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/FYP%202.0/admins/addKuih.php" target="_blank">
+            <a href="http://localhost/FYP%202.0/admins/addKuih.php"">
               <span class="material-icons-outlined">inventory_2</span> Products
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/FYP%202.0/admins/addCategory.php" target="_blank">
+            <a href="http://localhost/FYP%202.0/admins/addCategory.php">
               <span class="material-icons-outlined">category</span> Categories
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/FYP%202.0/admins/profiles.php" target="_blank">
+            <a href="http://localhost/FYP%202.0/admins/profiles.php"">
               <span class="material-icons-outlined">groups</span> Users
             </a>
           </li>
@@ -142,7 +140,7 @@
           </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/FYP%202.0/admins/listKuih.php" target="_blank">
+            <a href="http://localhost/FYP%202.0/admins/listKuih.php">
               <span class="material-icons-outlined">fact_check</span> Inventory
             </a>
           </li>
