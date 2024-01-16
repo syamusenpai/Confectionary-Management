@@ -53,19 +53,19 @@
 					<h1>Registration</h1>
 					<p>Fill up the form with correct values.</p>
 					<hr class="mb-3">
-                    <label for="firstname"><b>Username</b></label>
+                    <label for="username"><b>Username</b></label>
 					<input class="form-control" id="username" type="text" name="username" required>
 
-					<label for="firstname"><b>First Name</b></label>
-					<input class="form-control" id="firstname" type="text" name="firstname" required>
+					<label for="first_name"><b>First Name</b></label>
+					<input class="form-control" id="first_name" type="text" name="first_name" required>
 
-					<label for="lastname"><b>Last Name</b></label>
-					<input class="form-control" id="lastname"  type="text" name="lastname" required>
+					<label for="last_name"><b>Last Name</b></label>
+					<input class="form-control" id="last_name"  type="text" name="last_name" required>
 
 					<label for="email"><b>Email Address</b></label>
 					<input class="form-control" id="email"  type="text" name="email" required>
 
-					<label for="phonenumber"><b>Phone Number</b></label>
+					<label for="phone_number"><b>Phone Number</b></label>
 					<input class="form-control" id="phone_number"  type="text" name="phone_number" required>
 
 					<label for="password"><b>Password</b></label>
@@ -74,7 +74,7 @@
                     <label for="password"><b>Confirm Password</b></label>
 					<input class="form-control" id="password2"  type="password" name="password2" required>
 					<hr class="mb-3">
-					<input class="btn btn-primary" type="submit" id="register" name="create" value="Sign Up">
+					<input class="btn btn-primary" type="submit" id="submitted" name="submitted" value="Sign Up">
                     <br>
                     <br>
                     <p>Already have an account?</p>
@@ -107,8 +107,8 @@ if (isset($_POST['submitted'])) {
     }
 
     // Check for a password and match against the confirmed password.
-    if (!empty($_POST['password1'])) {
-        $password1 = $_POST['password1'];
+    if (!empty($_POST['password'])) {
+        $password1 = $_POST['password'];
         $password2 = $_POST['password2'];
     
         if ($password1 != $password2) {
