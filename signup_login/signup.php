@@ -190,4 +190,3 @@ mysqli_close($dbc); // Close the database connection.
 } // End of the main Submit conditional.
 ?>
 
-
