@@ -1,41 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Register</title>
-   
-   <!-- Font Awesome CDN link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Registration </title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #55007D;
+        }
 
-   <!-- Custom CSS file link  -->
-   <link rel="stylesheet" href="../style/sign.css">
+		.container {
+        background-color: #ffffff;
+        margin-top: 100px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px #000000;
+        padding: 20px;
+        text-align: center; /* Center the content within the container */
+        width: 70%; /* Set a fixed width for the container */
+        max-width: 500px; /* Set a maximum width for the container */
+        }
 
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+		        /* Add a style for the logo */
+				.logo {
+            text-align: center;
+        }
+
+        /* Style the logo image */
+        .logo img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto;
+        }
+
+    </style>
 </head>
 <body>
-   
 
-<section class="form-container">
+<div>
+	<form action="signup.php" method="post">
+		<div class="container">
+			
+		<div class="logo">
+                 <!-- Include your logo image -->
+                <img src="../img/logo.png" alt="Logo">
+			<div class="row">
+				<div class="col-sm-12 col-md-6 offset-md-3">
+					<h1>Registration</h1>
+					<p>Fill up the form with correct values.</p>
+					<hr class="mb-3">
+                    <label for="firstname"><b>Username</b></label>
+					<input class="form-control" id="username" type="text" name="username" required>
 
-   <form action="" method="post">
-      <h3>Register Now</h3>
-      
-        <p>Username: <input type="text" name="username" size="15" maxlength="15" value="<?php if (isset($_POST['username'])) echo $_POST['username']; ?>" /></p>
-        <p>Password: <input type="password" name="password1" size="10" maxlength="20" /></p>
-        <p>Confirm Password: <input type="password" name="password2" size="10" maxlength="20" /></p>
-        <p>First Name: <input type="text" name="first_name" size="15" maxlength="15" value="<?php if (isset($_POST['first_name'])) echo $_POST['first_name']; ?>" /></p>
-        <p>Last Name: <input type="text" name="last_name" size="15" maxlength="30" value="<?php if (isset($_POST['last_name'])) echo $_POST['last_name']; ?>" /></p>
-        <p>Email Address: <input type="text" name="email" size="20" maxlength="40" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" /></p>
-        <p>Phone Number: <input type="text" name="phone_number" size="15" maxlength="15" value="<?php if (isset($_POST['phone_number'])) echo $_POST['phone_number']; ?>" /></p>
-        <p><input type="submit" name="submit" value="Register" /></p>
-        <input type="hidden" name="submitted" value="TRUE" />
-      <p>Already have an account?</p>
-      <a href="../log_folder/login.php" class="option-btn">Login Now</a>
-   </form>
+					<label for="firstname"><b>First Name</b></label>
+					<input class="form-control" id="firstname" type="text" name="firstname" required>
 
-</section>
+					<label for="lastname"><b>Last Name</b></label>
+					<input class="form-control" id="lastname"  type="text" name="lastname" required>
 
+					<label for="email"><b>Email Address</b></label>
+					<input class="form-control" id="email"  type="text" name="email" required>
+
+					<label for="phonenumber"><b>Phone Number</b></label>
+					<input class="form-control" id="phone_number"  type="text" name="phone_number" required>
+
+					<label for="password"><b>Password</b></label>
+					<input class="form-control" id="password"  type="password" name="password" required>
+
+                    <label for="password"><b>Confirm Password</b></label>
+					<input class="form-control" id="password2"  type="password" name="password2" required>
+					<hr class="mb-3">
+					<input class="btn btn-primary" type="submit" id="register" name="create" value="Sign Up">
+                    <br>
+                    <br>
+                    <p>Already have an account?</p>
+      <a href="../signup_login/login.php" class="option-btn">Login Now</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
 
 <script src="js/script.js"></script>
 
