@@ -21,7 +21,7 @@
 	CHECKOUT
 </div>
 <div id="header">	
-<?php include '../include/user_header.php'; ?>
+<?php include './include/user_header.php'; ?>
 
 </div>
 
@@ -33,7 +33,21 @@
     	<span class="empty">No items in cart.</span>       
     </div>
     
-  
+    <h3>CATEGORIES</h3>
+    <div class="checklist categories">
+    	<ul>
+        	<li><a href=""><span></span>New Arivals</a></li>
+            <li><a href=""><span></span>Accesories</a></li>
+            <li><a href=""><span></span>Bags</a></li>
+            <li><a href=""><span></span>Dressed</a></li>
+            <li><a href=""><span></span>Jackets</a></li>
+            <li><a href=""><span></span>jewelry</a></li>
+            <li><a href=""><span></span>Shoes</a></li>
+            <li><a href=""><span></span>Shirts</a></li>
+            <li><a href=""><span></span>Sweaters</a></li>
+            <li><a href=""><span></span>T-shirts</a></li>
+        </ul>
+    </div>
     
     
  
