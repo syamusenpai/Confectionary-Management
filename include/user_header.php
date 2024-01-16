@@ -4,7 +4,7 @@
 
 <head>
     <!-- Meta tags and stylesheets as before -->
-    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
@@ -20,7 +20,7 @@
 
         <ul class="navbar">
             <li><a href="index.php" class="active">Home</a></li>
-            <li><a href="about.php">About</a></li>
+            <li><a href="./about.php">About</a></li>
             <li><a href="kuih.php">Shop</a></li>
             <li><a href="query.php">Query</a></li>
             <li><a href="contact.php">Contact</a></li>

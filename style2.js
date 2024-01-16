@@ -102,42 +102,67 @@ $(document).ready(function(){
     $('.product').each(function(i, el){
         handleProductCardAnimations(el);
     });
+// Add to Cart functionality
+var totalCartPrice = 0;  // Initialize total cart price
 
- // Add to Cart functionality
- $('.add-cart-large').each(function (i, el) {
+$('.add-cart-large').each(function (i, el) {
     $(el).click(function () {
         var productCard = $(this).closest('.row');
         var position = productCard.offset();
         var productImage = $(productCard).find('img').attr('src');
         var productName = $(productCard).find('h3').text();
-        var productPrice = $(productCard).find('.product_price').text().replace('RM ', ''); // Retrieve productPrice
+
+        // Ensure the price is a valid number (remove 'RM' and convert to float)
+        var productPrice = parseFloat($(productCard).find('.product_price').text().replace('RM', '').trim()) || 0;
+
+        // Use val() to get input value for quantity
+        var quantity = parseInt($(productCard).find('.quantity-input input').val()) || 1;
+
+        var totalPrice = productPrice * quantity;
+
+        totalCartPrice += totalPrice;  // Accumulate total cart price
 
         $("body").append('<div class="floating-cart"></div>');
         var cart = $('div.floating-cart');
         $(productCard).clone().appendTo(cart);
-        $(cart).css({ 'top': position.top + 'px', "left": position.left + 'px' }).fadeIn("slow").addClass('moveToCart');
+        $(cart).css({ 'top': position.top + 'px', 'left': position.left + 'px' }).fadeIn("slow").addClass('moveToCart');
         setTimeout(function () { $("body").addClass("MakeFloatingCart"); }, 800);
         setTimeout(function () {
             $('div.floating-cart').remove();
             $("body").removeClass("MakeFloatingCart");
 
-            var cartItem = "<div class='cart-item'><div class='img-wrap'><img src='" + productImage + "' alt='' /></div><span>" + productName + "</span><strong> " + productPrice + "</strong><div class='cart-item-border'></div><div class='delete-item'></div></div>";
+            var cartItem =
+            "<div class='cart-item'>" +
+            "   <div class='img-wrap'><img src='" + productImage + "' alt='' /></div>" +
+            "   <span>" + productName + "</span>" +
+            "   <div class='quantity-in-cart'>Quantity: " + quantity + "</div>" +
+            "   <strong> RM " + totalPrice.toFixed(2) + "</strong>" +
+            "   <div class='total-cart-price'>Total Cart Price: RM " + totalCartPrice.toFixed(2) + "</div>" +
+            "   <div class='cart-item-border'></div>" +
+            "   <div class='delete-item'>" +
+            "       <a href='#' class='delete-link'><img src='img/garbagecan.png' alt='Delete'></a>" +
+            "   </div>" +
+            "</div>";
+        
 
             $("#cart .empty").hide();
             $("#cart").append(cartItem);
             $("#checkout").fadeIn(500);
 
             $("#cart .cart-item").last()
-                .addClass("flash")
-                .find(".delete-item").click(function () {
-                    $(this).parent().fadeOut(300, function () {
-                        $(this).remove();
-                        if ($("#cart .cart-item").size() == 0) {
-                            $("#cart .empty").fadeIn(500);
-                            $("#checkout").fadeOut(500);
-                        }
-                    })
+            .addClass("flash")
+            .find(".delete-item").click(function () {
+                var deletedItemPrice = parseFloat($(this).siblings('strong').text().replace('RM', '').trim()) || 0;
+                totalCartPrice -= deletedItemPrice;  // Subtract deleted item price from total
+                $(this).parent().fadeOut(300, function () {
+                    $(this).remove();
+                    if ($("#cart .cart-item").size() == 0) {
+                        $("#cart .empty").fadeIn(500);
+                        $("#checkout").fadeOut(500);
+                    }
                 });
+            });
+        
             setTimeout(function () {
                 $("#cart .cart-item").last().removeClass("flash");
             }, 10);
@@ -145,6 +170,7 @@ $(document).ready(function(){
         }, 1000);
     });
 });
+
 });
 
 // Add your other scripts or include the existing ones here
