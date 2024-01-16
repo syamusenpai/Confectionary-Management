@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Note: No password hashing during login
         if ($password === $rowAdmin['password']) {
             $_SESSION['admin'] = $rowAdmin;
-            header('Location: http://localhost/final%20test%201/admins/Admin_dashbord.php');
+            header('Location: http://localhost/aneka_rasa_git/Confectionary-Management/admins/Admin_dashbord.php');
             exit();
         } else {
             echo "Invalid password";
@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Note: No password hashing during login
         if ($password === $rowUser['password']) {
             $_SESSION['user'] = $rowUser;
-            header('Location: http://localhost/final%20test%201/startWeb/');
+            header('Location: http://localhost/aneka_rasa_git/Confectionary-Management/startWeb/index.php');
             exit();
         } else {
             echo "Invalid password";

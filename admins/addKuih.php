@@ -50,7 +50,7 @@ if (isset($_POST['upload'])) {
 
     if (empty($msg)) {
         $msg = "Kuih information uploaded successfully";
-        header("location: http://localhost/final%20test%201/admins/addkuih.php");
+        header("location: http://localhost/aneka_rasa_git/Confectionary-Management/admins/addkuih.php");
         exit(); // Add exit to prevent further execution after redirection
     }
 }

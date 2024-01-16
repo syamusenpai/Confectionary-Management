@@ -89,9 +89,9 @@
           <div class="dropdown">
           <span class="material-icons-outlined">account_circle</span><p>
           <div class="dropdown-content">
-              <a href="http://localhost/final%20test%201/admins/editAdmin.php"><img src="../img/edit profile.png" alt="Edit Profile" style="width: 30px;">
+              <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/editAdmin.php"><img src="../img/edit profile.png" alt="Edit Profile" style="width: 30px;">
               Profile</a>
-              <a href="http://localhost/final%20test%201/signup_login/logout.php"><img src="../img/logout.png"alt="Edit Profile" style="width: 20px;">
+              <a href="http://localhost/aneka_rasa_git/Confectionary-Management/signup_login/logout.php"><img src="../img/logout.png"alt="Edit Profile" style="width: 20px;">
               Logout</a>
           </div>       
         </div>
@@ -110,43 +110,43 @@
 
         <ul class="sidebar-list">
           <li class="sidebar-list-item">
-            <a href="http://localhost/final%20test%201/admins/Admin_dashbord.php" target="_blank">
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/Admin_dashbord.php">
               <span class="material-icons-outlined">dashboard</span> Dashboard
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/final%20test%201/startWeb/" target="_blank">
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/startWeb/">
             <span class="material-icons-outlined">store</span> Store
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/final%20test%201/admins/addKuih.php" target="_blank">
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/addKuih.php">
               <span class="material-icons-outlined">inventory_2</span> Products
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/final%20test%201/admins/addCategory.php" target="_blank">
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/addCategory.php">
               <span class="material-icons-outlined">category</span> Categories
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/final%20test%201/admins/profiles.php" target="_blank">
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/profiles.php">
               <span class="material-icons-outlined">groups</span> Users
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="addUadmin.php" target="_blank">
+            <a href="addUadmin.php">
             <span class="material-icons-outlined">person_add</span> Add Users         
           </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="http://localhost/final%20test%201/admins/listKuih.php" target="_blank">
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/listKuih.php">
               <span class="material-icons-outlined">fact_check</span> Inventory
             </a>
           </li>
          
           <li class="sidebar-list-item">
-            <a href="askquery.php" target="_blank">
+            <a href="askquery.php">
               <span class="material-icons-outlined">poll</span> Asked Query
             </a>
           </li>

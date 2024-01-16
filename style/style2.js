@@ -140,7 +140,7 @@ $('.add-cart-large').each(function (i, el) {
             "   <div class='total-cart-price'>Total Cart Price: RM " + totalCartPrice.toFixed(2) + "</div>" +
             "   <div class='cart-item-border'></div>" +
             "   <div class='delete-item'>" +
-            "       <a href='#' class='delete-link'><img src='img/garbagecan.png' alt='Delete'></a>" +
+            "       <a href='#' class='delete-link'><img src='../img/garbagecan.png' alt='Delete'></a>" +
             "   </div>" +
             "</div>";
         

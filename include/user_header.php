@@ -27,8 +27,7 @@
         </ul>
         
         <div class="icons">
-            <a href=""><i class="ri-search-line"></i></a>
-            <a href=""><i class="ri-shopping-cart-line"></i></a>            
+                      
             <div class="bx bx-menu" id="menu-icon"></div>
             <?php
             session_start();

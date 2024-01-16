@@ -9,6 +9,6 @@ $_SESSION = array();
 session_destroy();
 
 // Redirect to the login page after logout
-header('Location: http://localhost/final%20test%201/startWeb/');
+header('Location: http://localhost/aneka_rasa_git/Confectionary-Management/startWeb/index.php');
 exit();
 ?>
