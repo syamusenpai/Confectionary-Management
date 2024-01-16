@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Add to Cart Interaction Example</title>
-  <link rel="stylesheet" href="./style/style2.css">
-  <link rel="stylesheet" type="text/css" href="./style/style.css">
+  <link rel="stylesheet" href="../style/style2.css">
+  <link rel="stylesheet" type="text/css" href="../style/style.css">
 
 </head>
 <body>
@@ -105,7 +105,7 @@ $result = mysqli_query($dbc
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- partial -->
-  <script  src="./style/style2.js"></script>
+  <script  src="../style/style2.js"></script>
 
 </body>
 </html>
