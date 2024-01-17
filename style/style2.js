@@ -171,6 +171,54 @@ $('.add-cart-large').each(function (i, el) {
     });
 });
 
+
+// Add your other scripts or include the existing ones here
+
+// Save cart data to local storage
+function saveCartDataToLocalStorage(cartData) {
+    localStorage.setItem('cartData', JSON.stringify(cartData));
+}
+
+// Load cart data from local storage
+function loadCartDataFromLocalStorage() {
+    var cartData = localStorage.getItem('cartData');
+    return cartData ? JSON.parse(cartData) : [];
+}
+
+// Add click event handler for the checkout button
+$('#checkout').click(function () {
+    // Check if the cart is not empty before redirecting
+    if ($("#cart .cart-item").length > 0) {
+        // Get the cart data
+        var cartData = getCartData();
+        
+        // Save the cart data to local storage
+        saveCartDataToLocalStorage(cartData);
+
+        // Redirect to the checkout page
+        window.location.href = 'checkout.php';
+    } else {
+        // Show a message or alert that the cart is empty
+        alert("Your cart is empty. Add items before checking out.");
+    }
+});
+
+// Function to get the cart data
+function getCartData() {
+    var cartData = [];
+    $("#cart .cart-item").each(function () {
+        var item = {
+            image: $(this).find('.img-wrap img').attr('src'),
+            name: $(this).find('span').text(),
+            quantity: parseInt($(this).find('.quantity-in-cart').text().replace('Quantity: ', '')),
+            price: parseFloat($(this).find('strong').text().replace('RM ', ''))
+        };
+        cartData.push(item);
+    });
+    return cartData;
+}
+
+
 });
 
 // Add your other scripts or include the existing ones here

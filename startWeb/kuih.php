@@ -44,7 +44,7 @@ $result = mysqli_query($dbc, $query);
 
 <!DOCTYPE html>
 <html lang="en">
-
+<?php include '../include/user_header.php'; ?>
 <head>
     <meta charset="UTF-8">
     <title>Product Listing</title>
@@ -53,7 +53,7 @@ $result = mysqli_query($dbc, $query);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Add your other stylesheets and scripts here -->
 </head>
-<?php include '../include/user_header.php'; ?>
+
 
 <body>
 
@@ -65,9 +65,11 @@ $result = mysqli_query($dbc, $query);
         <div class="cart-icon-bottom">
 </div>
 
-<div id="checkout">
-	CHECKOUT
+<div id="checkout" style="cursor: pointer; padding: 10px; background-color: #4CAF50; color: white; text-align: center;">
+    CHECKOUT
 </div>
+<br>
+
         <div id="sidebar">
             <h3>CART</h3>
             <div id="cart">
