@@ -196,7 +196,7 @@ $('#checkout').click(function () {
         saveCartDataToLocalStorage(cartData);
 
         // Redirect to the checkout page
-        window.location.href = 'checkout.php';
+        window.location.href = 'checkout.php?cartData=' + encodeURIComponent(JSON.stringify(cartData));
     } else {
         // Show a message or alert that the cart is empty
         alert("Your cart is empty. Add items before checking out.");

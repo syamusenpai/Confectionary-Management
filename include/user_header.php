@@ -27,7 +27,7 @@
         </ul>
         
         <div class="icons">
-                      
+                     
             <div class="bx bx-menu" id="menu-icon"></div>
             <?php
             session_start();

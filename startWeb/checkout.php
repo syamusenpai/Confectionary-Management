@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,13 +11,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;0,900;1,500;1,800&display=swap" rel="stylesheet">
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
 </head>
-
-
-
-
-<body>
 <body>
     
     <section class="home2">
@@ -29,7 +26,7 @@
         <br>
         
     </div>       
-    
+    <section class="home2">
             <div class="middle-text">
                 <h2><span> come again next time okay?</span></h2>
             </div>
@@ -62,7 +59,104 @@
         </section>
     
     </body>
+  
     <script src="jquery.min.js"></script>
-    <script src="checkout.js"></script>
+    
+</body>
+
+<?php
+// Retrieve cart data from the URL parameter
+$cartData = isset($_GET['cartData']) ? json_decode(urldecode($_GET['cartData']), true) : [];
+
+// Clear the cart data from the URL parameter after processing
+unset($_GET['cartData']);
+
+?>
+
+
+<body>
+<body>
+    <section class="checkout">
+    <?php
+if (!empty($cartData)) {
+    // Display order summary
+    echo '<h2>Order Summary</h2>';
+    echo '<ul>';
+    foreach ($cartData as $item) {
+        echo '<li>' . $item['name'] . ' - Quantity: ' . $item['quantity'] . ' - Price: RM ' . number_format($item['price'], 2) . '</li>';
+    }
+    echo '</ul>';
+
+    // Calculate total price
+    $totalPrice = array_sum(array_column($cartData, 'price'));
+    echo '<h3>Total Price: RM ' . number_format($totalPrice, 2) . '</h3>';
+} else {
+    echo '<p>Your cart is empty.</p>';
+}
+?>
+   </section>
+
+</html>
+
+<body>
+<h2><span> Your details</span></h2>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+<br>
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" required>
+<br>
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
+<br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+<br>
+        <label for="proofOfPurchase">Upload Proof of Purchase:</label>
+        <input type="file" id="proofOfPurchase" name="proofOfPurchase" accept=".pdf, .jpg, .jpeg, .png" required>
+<br>
+        <button type="submit">Submit</button>
+        <br>
+    </form>
+
 </body>
 </html>
+
+<?php
+include("../include/db_connect.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    $name = $_POST["name"];
+    $phoneNumber = $_POST["phoneNumber"];
+    $address = $_POST["address"];
+    $email = $_POST["email"];
+    
+    
+    // Additional data for the database
+    $method = "QR";
+    $placedOn = date("Y-m-d H:i:s");  // Current timestamp
+    $paymentStatus = "Pending";
+
+    // Calculate total products and total price based on your requirements
+    $totalProducts = $item['quantity']; 
+    $totalPrice = $item['price']; 
+
+    // Read the content of the uploaded file
+    $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
+
+    // Save the data to the database
+    $sql = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
+            VALUES ('$user_id', '$name', '$phoneNumber', '$email', '$method', '$address', '$totalProducts', '$totalPrice', '$placedOn', '$paymentStatus', ?)";
+
+    // Use prepared statements for security
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("b", $fileContent); // 'b' indicates a BLOB parameter
+    $stmt->execute();
+    $stmt->close();
+
+    echo "Order details with proof of purchase saved successfully!";
+}
+?>
