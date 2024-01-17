@@ -57,7 +57,7 @@
     if (isset($_SESSION['admin'])) {
         // Retrieve admin information from the database based on the admin's ID
         $adminId = $_SESSION['admin']['id'];
-        $query = "SELECT name FROM admins WHERE id = ?";
+        $query = "SELECT username FROM admins WHERE id = ?";
 
         $stmt = $dbc->prepare($query);
         $stmt->bind_param("i", $adminId);
@@ -236,20 +236,11 @@
           </div>
 
           <div class="charts-card">
-            <h2 class="chart-title">Purchase and Sales Orders</h2>
+            <h2 class="chart-title">Profit and Sales </h2>
             <div id="area-chart"></div>
           </div>
 
-          <div class="charts-card">
-            <h2 class="chart-title">Profits</h2>
-            <div id="basic-chart"></div>
-          </div>
-
-          <div class="charts-card">
-            <h2 class="chart-title">Sales</h2>
-            <div id="spark2"></div>
-          </div>
-
+       
         </div>
       </main>
       <!-- End Main -->
