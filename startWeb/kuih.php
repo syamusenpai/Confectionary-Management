@@ -328,19 +328,27 @@ function loadCartDataFromLocalStorage() {
 
 // Add click event handler for the checkout button
 $('#checkout').click(function () {
-    // Check if the cart is not empty before redirecting
-    if ($("#cart .cart-item").length > 0) {
-        // Get the cart data
-        var cartData = getCartData();
-        
-        // Save the cart data to local storage
-        saveCartDataToLocalStorage(cartData);
+    // Check if the user is logged in
+    var isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
 
-        // Redirect to the checkout page
-        window.location.href = 'checkout.php?cartData=' + encodeURIComponent(JSON.stringify(cartData));
+    if (isLoggedIn) {
+        // Check if the cart is not empty before redirecting
+        if ($("#cart .cart-item").length > 0) {
+            // Get the cart data
+            var cartData = getCartData();
+
+            // Save the cart data to local storage
+            saveCartDataToLocalStorage(cartData);
+
+            // Redirect to the checkout page
+            window.location.href = 'checkout.php?cartData=' + encodeURIComponent(JSON.stringify(cartData));
+        } else {
+            // Show a message or alert that the cart is empty
+            alert("Your cart is empty. Add items before checking out.");
+        }
     } else {
-        // Show a message or alert that the cart is empty
-        alert("Your cart is empty. Add items before checking out.");
+        // Redirect to the login page if the user is not logged in
+        window.location.href = '../signup_login/login.php';
     }
 });
 
