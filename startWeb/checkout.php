@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 
 <html lang="en">
+<?php
+$db_host = 'localhost';
+$db_user = 'root';
+$db_password = '';
+$db_name = 'aneka_2.0';
+
+$conn = new mysqli($db_host, $db_user, $db_password, $db_name);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;0,900;1,500;1,800&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 </head>
 <body>
     
@@ -100,32 +112,36 @@ if (!empty($cartData)) {
 
 <body>
 <h2><span> Your details</span></h2>
-
+<div class="container">
+<div class="row">
+<div class="col-sm-12 col-md-6 offset-md-3">
     <form action="" method="post" enctype="multipart/form-data">
+    
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+        <input class="form-control" type="text" id="name" name="name" required>
 <br>
         <label for="phoneNumber">Phone Number:</label>
-        <input type="tel" id="phoneNumber" name="phoneNumber" required>
+        <input class="form-control"type="tel" id="phoneNumber" name="phoneNumber" required>
 <br>
         <label for="address">Address:</label>
-        <textarea id="address" name="address" rows="4" required></textarea>
+        <textarea class="form-control" id="address" name="address" rows="4" required></textarea>
 <br>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input class="form-control"type="email" id="email" name="email" required>
 <br>
         <label for="proofOfPurchase">Upload Proof of Purchase:</label>
-        <input type="file" id="proofOfPurchase" name="proofOfPurchase" accept=".pdf, .jpg, .jpeg, .png" required>
+        <input class="form-control" type="file" id="proofOfPurchase" name="proofOfPurchase" accept=".pdf, .jpg, .jpeg, .png" required>
 <br>
-        <button type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
         <br>
     </form>
-
+ </div>
+ </div>
+ </div>
 </body>
 </html>
 
 <?php
-include("../include/db_connect.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -134,29 +150,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = $_POST["address"];
     $email = $_POST["email"];
     
+    // Retrieve user_id based on email (you might need to adjust this query based on your actual database schema)
+    $userQuery = "SELECT id FROM users WHERE email = ?";
     
-    // Additional data for the database
-    $method = "QR";
-    $placedOn = date("Y-m-d H:i:s");  // Current timestamp
-    $paymentStatus = "Pending";
+    $stmtUser = $conn->prepare($userQuery);
+    $stmtUser->bind_param("s", $email);
+    $stmtUser->execute();
+    $stmtUser->bind_result($user_id);
+    
+    // Fetch the user_id
+    if ($stmtUser->fetch()) {
+        // Additional data for the database
+        $method = "QR";
+        $placedOn = date("Y-m-d H:i:s");  // Current timestamp
+        $paymentStatus = "Pending";
 
-    // Calculate total products and total price based on your requirements
-    $totalProducts = $item['quantity']; 
-    $totalPrice = $item['price']; 
+        // Calculate total products and total price based on your requirements
+        $totalProducts = $item['quantity']; 
+        $totalPrice = $item['price']; 
 
-    // Read the content of the uploaded file
-    $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
+        // Read the content of the uploaded file
+        $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
+        $stmtUser->close();
+        // Save the data to the database
+        $sql = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    // Save the data to the database
-    $sql = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
-            VALUES ('$user_id', '$name', '$phoneNumber', '$email', '$method', '$address', '$totalProducts', '$totalPrice', '$placedOn', '$paymentStatus', ?)";
+        // Use prepared statements for security
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isssssiddbs", $user_id, $name, $phoneNumber, $email, $method, $address, $totalProducts, $totalPrice, $placedOn, $paymentStatus, $fileContent);
+        $stmt->execute();
 
-    // Use prepared statements for security
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("b", $fileContent); // 'b' indicates a BLOB parameter
-    $stmt->execute();
-    $stmt->close();
+        
+        $stmt->close();
 
-    echo "Order details with proof of purchase saved successfully!";
+        echo "Order details with proof of purchase saved successfully!<br>";
+    } else {
+        echo "User not found with the provided email.<br>";
+    }
 }
 ?>
+
+    <a href="kuih.php" class="btn">Explore more?</a>

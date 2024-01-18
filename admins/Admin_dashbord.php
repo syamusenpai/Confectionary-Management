@@ -110,9 +110,9 @@
 
         <ul class="sidebar-list">
           <li class="sidebar-list-item">
-            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/Admin_dashbord.php">
-              <span class="material-icons-outlined">dashboard</span> Dashboard
-            </a>
+            <a href="http://localhost/aneka_rasa_git/Confectionary-Management/admins/orderapproval.php">
+            <span class="material-icons-outlined">grading</span>Order Approval           
+          </a>
           </li>
           <li class="sidebar-list-item">
             <a href="http://localhost/aneka_rasa_git/Confectionary-Management/startWeb/">
