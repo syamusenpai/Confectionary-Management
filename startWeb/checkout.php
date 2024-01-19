@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo "Order details with proof of purchase saved successfully!<br>";
     } else {
-        echo "User not found with the provided email.<br>";
+        echo "User not found with the provide email.<br>";
     }
 }
 ?>
