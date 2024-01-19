@@ -103,6 +103,7 @@ $conn->close();
         <p>Total Product: <?php echo $order['total_products']; ?></p>
         <p>Total Price: <?php echo $order['total_price']; ?></p>
         
+        
 
 
         <!-- Create the form to approve or decline the order -->
@@ -114,7 +115,7 @@ $conn->close();
         <input type="hidden" name="address" value="<?php echo $order['address']; ?>">
         <input type="hidden" name="total_products" value="<?php echo $order['total_products']; ?>">
         <input type="hidden" name="total_price" value="<?php echo $order['total_price']; ?>">
-        
+         
         
         <button type="submit" class="btn btn-success" name="approve_order">Approve</button>
         <button type="submit" class="btn btn-danger" name="decline_order">Decline</button>

@@ -126,7 +126,7 @@ if (!empty($cartData)) {
         <label for="address">Address:</label>
         <textarea class="form-control" id="address" name="address" rows="4" required></textarea>
 <br>
-        <label for="email">Email:</label>
+        <label for="email">Email:(use your login email)</label>
         <input class="form-control"type="email" id="email" name="email" required>
 <br>
         <label for="proofOfPurchase">Upload Proof of Purchase:</label>
@@ -166,8 +166,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $paymentStatus = "Pending";
 
         // Calculate total products and total price based on your requirements
-        $totalProducts = $item['quantity']; 
-        $totalPrice = $item['price']; 
+        $totalProducts = array_sum(array_column($cartData, 'quantity'));
+        $totalPrice =  array_sum(array_column($cartData, 'price'));
 
         // Read the content of the uploaded file
         $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
