@@ -79,3 +79,43 @@ $dbc->close();
 <section>
 <h1>Answered Queries</h1>
 </section>
+
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "aneka_2.0";
+
+$dbc = new mysqli($servername, $username, $password, $dbname);
+
+// Check the connection
+if ($dbc->connect_error) {
+    die("Connection failed: " . $dbc->connect_error);
+}
+
+// Display answered queries
+$query = "SELECT * FROM user_queries WHERE answer IS NOT NULL";
+$result = $dbc->query($query);
+
+echo "<section>";
+echo "<h1>Answered Queries</h1>";
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<div>";
+        echo "<p><strong>Name:</strong> " . $row['name'] . "</p>";
+        echo "<p><strong>Query:</strong> " . $row['query'] . "</p>";
+        echo "<p><strong>Answer:</strong> " . $row['answer'] . "</p>";
+        echo "</div>";
+        echo "<br>";
+    }
+} else {
+    echo "<p>No answered queries.</p>";
+}
+
+echo "</section>";
+
+
+$dbc->close();
+?>
