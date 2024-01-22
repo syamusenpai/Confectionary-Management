@@ -24,7 +24,7 @@
         }
 
         // Extract admin details
-        $username = $adminData["name"];
+        $username = $adminData["username"];
         $firstname = $adminData["first_name"];
         $lastname = $adminData["last_name"];
         $email = $adminData["email"];
@@ -93,7 +93,9 @@
 </div>
 <br>
 <br>
-<a href="Admin_dashbord.php"><center>[Back to admin page]</center></a>
+<a href="Admin_dashbord.php"><center>[Back to admin page]</center></a><p></p>
+<a href="profiles.php"><center>[Back to profile page]</center></a>
+
 
 
 </body>

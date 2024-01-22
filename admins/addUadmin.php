@@ -88,14 +88,14 @@
         <div class="sub-cont">
             <div class="img">
                 <div class="img__text m--up">
-                    <h3>Add an Admin</h3>
+                    <h3>Add an User</h3>
                 </div>
                 <div class="img__text m--in">
-                    <h3>Add a User.</h3>
+                    <h3>Add a Admin.</h3>
                 </div>
                 <div class="img__btn">
-                    <span class="m--up">Add Admin</span>
-                    <span class="m--in">Add User</span>
+                    <span class="m--up">Add User</span>
+                    <span class="m--in">Add Admin</span>
                 </div>
             </div>
             <div class="form sign-up">
@@ -135,7 +135,7 @@
             </div>
         </div>
     </div>
-    <a href="Admin_dashbord.php"><center>[Back to Kuih page]</center></a>
+    <a href="Admin_dashbord.php"><center>[Back to admin page]</center></a>
 
     <script>
     document.querySelector('.img__btn').addEventListener('click', function() {

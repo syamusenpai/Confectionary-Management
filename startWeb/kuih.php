@@ -35,7 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     // Default query to fetch all products
-    $query = "SELECT * FROM products";
+    $query = "SELECT id, name, details, price, quantity, image FROM products";
+    
 }
 
 $result = mysqli_query($dbc, $query);
@@ -54,7 +55,56 @@ $result = mysqli_query($dbc, $query);
     <!-- Add your other stylesheets and scripts here -->
 </head>
 
+<style>
+  
+/* CSS code for a modern search interface theme */
 
+/* Form container */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+
+/* Label styles */
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Input styles */
+input[type="text"],
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+/* Select styles */
+select {
+  width: 320px;
+}
+
+/* Submit button styles */
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Submit button hover effect */
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+</style>
 <body>
 
     <div id="wrapper">
@@ -102,24 +152,25 @@ $result = mysqli_query($dbc, $query);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
             ?>
-                    <div class="row">
-                        <div class="main-row">
-                            <div class="row-text">
-                                <h3><?php echo $row['name']; ?></h3>
-                                <h6>Description:<br><?php echo $row['details']; ?></h6>
-                                <span class="product_price">RM<?php echo $row['price']; ?></span>
-                                <p>Quantity in Stock: <?php echo $row['quantity']; ?></p>
-                            </div>
-                            <div class="row-img">
-                                <center><img src="../img/<?php echo $row['image_01']; ?>" alt="<?php echo $row['name']; ?>"></center>
-                            </div>
-                            <div class="quantity-input">
-                                <label for="quantity<?php echo $row['id']; ?>">Quantity:</label>
-                                <input type="number" id="quantity<?php echo $row['id']; ?>" name="quantity" value="1" min="1" max="<?php echo $row['quantity']; ?>">
-                            </div>
-                            <center><button class="add-cart-large">Add To Cart</button></center>
-                        </div>
-                    </div>
+                   <div class="row" data-product-id="<?php echo $row['id']; ?>">
+    <div class="main-row">
+        <div class="row-text">
+            <h3><?php echo $row['name']; ?></h3>
+            <h6>Description:<br><?php echo $row['details']; ?></h6>
+            <span class="product_price">RM<?php echo $row['price']; ?></span>
+            <p>Quantity in Stock: <?php echo $row['quantity']; ?></p>
+        </div>
+        <div class="row-img">
+            <center><img src="../img/<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>"></center>
+        </div>
+        <div class="quantity-input">
+            <label for="quantity<?php echo $row['id']; ?>">Quantity:</label>
+            <input type="number" id="quantity<?php echo $row['id']; ?>" name="quantity" value="1" min="1" max="<?php echo $row['quantity']; ?>">
+        </div>
+        <center><button class="add-cart-large">Add To Cart</button></center>
+    </div>
+</div>
+
             <?php
                 }
             } else {
@@ -248,12 +299,15 @@ var totalCartPrice = 0;  // Initialize total cart price
 
 $('.add-cart-large').each(function (i, el) {
     $(el).click(function () {
-        var productCard = $(this).closest('.row');
-        var position = productCard.offset();
-        var productImage = $(productCard).find('img').attr('src');
-        var productName = $(productCard).find('h3').text();
-
-        // Ensure the price is a valid number (remove 'RM' and convert to float)
+            var productCard = $(this).closest('.row');
+            var position = productCard.offset();
+            var productImage = $(productCard).find('img').attr('src');
+            var productName = $(productCard).find('h3').text();
+            var productCard = $(this).closest('.row');
+            var productID = productCard.data('product-id');
+        
+            
+            // Ensure the price is a valid number (remove 'RM' and convert to float)
         var productPrice = parseFloat($(productCard).find('.product_price').text().replace('RM', '').trim()) || 0;
 
         // Use val() to get input value for quantity
@@ -262,6 +316,7 @@ $('.add-cart-large').each(function (i, el) {
         var totalPrice = productPrice * quantity;
 
         totalCartPrice += totalPrice;  // Accumulate total cart price
+        console.log("Product ID: " + productID);
 
         $("body").append('<div class="floating-cart"></div>');
         var cart = $('div.floating-cart');
@@ -273,16 +328,17 @@ $('.add-cart-large').each(function (i, el) {
             $("body").removeClass("MakeFloatingCart");
 
             var cartItem =
-            "<div class='cart-item'>" +
+            "<div class='cart-item' data-product-id='" + productID + "'>" +
+            "   <div class='delete-item'>" +
+            "       <a href='#' class='delete-link'><img src='../img/garbagecan.png' alt='Delete'></a>" +
+            "   </div>" +
             "   <div class='img-wrap'><img src='" + productImage + "' alt='' /></div>" +
             "   <span>" + productName + "</span>" +
             "   <div class='quantity-in-cart'>Quantity: " + quantity + "</div>" +
             "   <strong> RM " + totalPrice.toFixed(2) + "</strong>" +
             "   <div class='total-cart-price'>Total Cart Price: RM " + totalCartPrice.toFixed(2) + "</div>" +
             "   <div class='cart-item-border'></div>" +
-            "   <div class='delete-item'>" +
-            "       <a href='#' class='delete-link'><img src='../img/garbagecan.png' alt='Delete'></a>" +
-            "   </div>" +
+           
             "</div>";
         
 
@@ -351,21 +407,31 @@ $('#checkout').click(function () {
         window.location.href = '../signup_login/login.php';
     }
 });
-
-// Function to get the cart data
 function getCartData() {
     var cartData = [];
+
+    // Iterate over each element with class .cart-item inside the #cart element
     $("#cart .cart-item").each(function () {
+        // Retrieve product ID from the data-product-id attribute
+        var productId = $(this).data('product-id');
+
+        // Create an object representing a cart item
         var item = {
-            image: $(this).find('.img-wrap img').attr('src'),
-            name: $(this).find('span').text(),
-            quantity: parseInt($(this).find('.quantity-in-cart').text().replace('Quantity: ', '')),
-            price: parseFloat($(this).find('strong').text().replace('RM ', ''))
+            id: productId,
+            image: $(this).find('.img-wrap img').attr('src'), // Extract image source
+            name: $(this).find('span').text(), // Extract product name
+            quantity: parseInt($(this).find('.quantity-in-cart').text().replace('Quantity: ', '')), // Extract quantity
+            price: parseFloat($(this).find('strong').text().replace('RM ', '')) // Extract price
         };
+
+        // Push the cart item object to the cartData array
         cartData.push(item);
     });
+
+    // Return the array containing cart data
     return cartData;
 }
+
 
 
 });

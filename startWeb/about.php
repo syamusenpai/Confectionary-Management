@@ -19,7 +19,9 @@
 
 
 <body> 
-    
+    <style>
+        
+    </style>
 
      <section class="home2">
         <div class="home2--text" >   

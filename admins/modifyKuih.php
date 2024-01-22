@@ -9,7 +9,7 @@ if (isset($_POST['modify'])) {
     $existingDetails = mysqli_fetch_assoc($result);
 
     // Get new values from the form
-    $newImage = !empty($_POST['newImage']) ? mysqli_real_escape_string($dbc, $_POST['newImage']) : $existingDetails['image_01'];
+    $newImage = !empty($_POST['newImage']) ? mysqli_real_escape_string($dbc, $_POST['newImage']) : $existingDetails['image'];
     $newName = !empty($_POST['newName']) ? mysqli_real_escape_string($dbc, $_POST['newName']) : $existingDetails['name'];
     $newPrice = !empty($_POST['newPrice']) ? mysqli_real_escape_string($dbc, $_POST['newPrice']) : $existingDetails['price'];
     $newDetails = !empty($_POST['newDetails']) ? mysqli_real_escape_string($dbc, $_POST['newDetails']) : $existingDetails['details'];
@@ -25,7 +25,7 @@ if (isset($_POST['modify'])) {
 
     // Update the product details
     mysqli_query($dbc, "UPDATE products 
-                        SET image_01 = '$newImage', 
+                        SET image = '$newImage', 
                             price = '$newPrice', 
                             details = '$newDetails', 
                             quantity = '$newQuantity' 

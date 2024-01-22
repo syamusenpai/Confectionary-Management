@@ -140,24 +140,21 @@ if (!empty($cartData)) {
  </div>
 </body>
 </html>
-
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
     $name = $_POST["name"];
     $phoneNumber = $_POST["phoneNumber"];
     $address = $_POST["address"];
     $email = $_POST["email"];
-    
-    // Retrieve user_id based on email (you might need to adjust this query based on your actual database schema)
+
+    // Retrieve user_id based on email
     $userQuery = "SELECT id FROM users WHERE email = ?";
-    
+
     $stmtUser = $conn->prepare($userQuery);
     $stmtUser->bind_param("s", $email);
     $stmtUser->execute();
     $stmtUser->bind_result($user_id);
-    
+
     // Fetch the user_id
     if ($stmtUser->fetch()) {
         // Additional data for the database
@@ -167,28 +164,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Calculate total products and total price based on your requirements
         $totalProducts = array_sum(array_column($cartData, 'quantity'));
-        $totalPrice =  array_sum(array_column($cartData, 'price'));
+        $totalPrice = array_sum(array_column($cartData, 'price'));
 
         // Read the content of the uploaded file
         $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
         $stmtUser->close();
-        // Save the data to the database
-        $sql = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Use prepared statements for security
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isssssiddbs", $user_id, $name, $phoneNumber, $email, $method, $address, $totalProducts, $totalPrice, $placedOn, $paymentStatus, $fileContent);
-        $stmt->execute();
+        // Save the data to the database in the orders table
+        $sqlOrder = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        
-        $stmt->close();
+        $stmtOrder = $conn->prepare($sqlOrder);
+        $stmtOrder->bind_param("isssssiddbs", $user_id, $name, $phoneNumber, $email, $method, $address, $totalProducts, $totalPrice, $placedOn, $paymentStatus, $fileContent);
+        $stmtOrder->execute();
+
+        // Retrieve the generated order_id
+        $orderId = $stmtOrder->insert_id;
+
+        $stmtOrder->close();
+
+        // Insert order details into the order_details table for each item in the cart
+        foreach ($cartData as $item) {
+            $productId = $item['id'];
+            $quantity = $item['quantity'];
+            $price = $item['price'];
+
+            $sqlOrderDetails = "INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+            $stmtOrderDetails = $conn->prepare($sqlOrderDetails);
+            $stmtOrderDetails->bind_param("iiid", $orderId, $productId, $quantity, $price);
+            $stmtOrderDetails->execute();
+            $stmtOrderDetails->close();
+        }
 
         echo "Order details with proof of purchase saved successfully!<br>";
+        echo "Order ID: $orderId<br>";
     } else {
-        echo "User not found with the provide email.<br>";
+        echo "User not found with the provided email.<br>";
     }
 }
 ?>
 
-    <a href="kuih.php" class="btn">Explore more?</a>
+<a href="kuih.php" class="btn">Explore more?</a>

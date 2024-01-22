@@ -10,7 +10,18 @@ $dbc = new mysqli($servername, $username, $password, $dbname);
 if ($dbc->connect_error) {
     die("Connection failed: " . $dbc->connect_error);
 }
+// Retrieve the count of unanswered queries from the database
+$countQuery = "SELECT COUNT(*) AS unansweredCount FROM user_queries WHERE answer IS NULL";
+$countResult = $dbc->query($countQuery);
+$alertsCount = 0;
 
+if ($countResult) {
+    $countRow = $countResult->fetch_assoc();
+    $alertsCount = $countRow['unansweredCount'];
+}
+
+// Close the count result
+$countResult->close();
 // Retrieve unanswered queries from the database
 $query = "SELECT * FROM user_queries WHERE answer IS NULL";
 $result = $dbc->query($query);
@@ -38,7 +49,67 @@ if ($result->num_rows > 0) {
     echo "<h1>No Unanswered Queries</h1>";
     echo "</section>";
 }
-
+echo "<a href='Admin_dashbord.php'><center>[Back to admin page]</center></a>";
 // Close the database connection
 $dbc->close();
 ?>
+<style>
+    section {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+div {
+  background-color: #ffffff;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+form {
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+input[type="submit"] {
+  background-color: #4caf50;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+</style>

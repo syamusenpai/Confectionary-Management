@@ -34,7 +34,79 @@ if (isset($_SESSION['modify_success']) && $_SESSION['modify_success']) {
                 /* Add your styles here */
             </style>
         </head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
 
+h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 80%;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+}
+
+th {
+  background-color: #ffea6b;
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+img {
+  max-width: 100px;
+  height: auto;
+}
+
+form {
+  margin-top: 20px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea {
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #000000;
+  text-decoration: none;
+}
+
+</style>
         <body>
             <br>
             <h1>Kuih Details</h1>
@@ -52,7 +124,7 @@ if (isset($_SESSION['modify_success']) && $_SESSION['modify_success']) {
                 </tr>
 
                 <tr>
-                    <td><?php echo '<img src="../img/', $row['image_01'], '" >'; ?></td>
+                    <td><?php echo '<img src="../img/', $row['image'], '" >'; ?></td>
                     <td><?php echo $kuihName; ?></td>
                     <td><?php echo $kuihDetails; ?></td>
                     <td><?php echo $quantity; ?></td>
@@ -85,7 +157,7 @@ if (isset($_SESSION['modify_success']) && $_SESSION['modify_success']) {
 
                 <!-- Modify Quantity -->
                 <label for="newQuantity">New Quantity:</label>
-                <input type="text" id="newQuantity" name="newQuantity" placeholder="Enter new quantity">
+                <input type="text" id="newQuantity" name="newQuantity" placeholder="Enter new quantity"><br>
 
                 <!-- Submit button for modifications -->
                 <input type="submit" name="modify" value="Modify">

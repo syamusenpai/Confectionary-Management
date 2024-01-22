@@ -29,6 +29,7 @@ if (isset($_POST['approve_order'])) {
     // Insert approved order into the sales table
     $query = "INSERT INTO sales (user_id, name, number, email, method, address, total_products, total_price, proof_of_purchase, profit)
     VALUES ($userID, '$name', '$number', '$email', 'QR', '$address', '$total_products', $total_price, '$proof_of_purchase', $profit);";
+    
     if ($conn->query($query) === TRUE) {
         // Delete the approved order from the order table
         $deleteQuery = "DELETE FROM `orders` WHERE user_id = '$userID'";
@@ -93,21 +94,99 @@ $conn->close();
     <h2>
     <u>Order Approval</u>
     </h2>
-    <div>
-        <p>User ID: <?php echo $order['user_id']; ?></p>
-        <p>Name: <?php echo $order['name']; ?></p>
-        <p>Number: <?php echo $order['number']; ?></p>
-        <p>Email: <?php echo $order['email']; ?></p>
-        <p>Method: <?php echo "QR"; ?></p>
-        <p>address: <?php echo $order['address']; ?></p>
-        <p>Total Product: <?php echo $order['total_products']; ?></p>
-        <p>Total Price: <?php echo $order['total_price']; ?></p>
-        
-        
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-        <!-- Create the form to approve or decline the order -->
-        <form action="orderapproval.php" method="POST">
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .approval-form {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-success {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>User ID:</td>
+            <td><?php echo $order['user_id']; ?></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><?php echo $order['name']; ?></td>
+        </tr>
+        <tr>
+            <td>Number:</td>
+            <td><?php echo $order['number']; ?></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><?php echo $order['email']; ?></td>
+        </tr>
+        <tr>
+            <td>Method:</td>
+            <td>QR</td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td><?php echo $order['address']; ?></td>
+        </tr>
+        <tr>
+            <td>Total Product:</td>
+            <td><?php echo $order['total_products']; ?></td>
+        </tr>
+        <tr>
+            <td>Total Price:</td>
+            <td><?php echo $order['total_price']; ?></td>
+        </tr>
+        <tr>
+            <td>Proof Note:</td>
+            <td><a href="view.php">View Proof</a></td>
+        </tr>
+    </table>
+
+    <!-- Approval/Decline Form -->
+    <form action="orderapproval.php" method="POST" class="approval-form">
         <input type="hidden" name="user_id" value="<?php echo $order['user_id']; ?>">
         <input type="hidden" name="name" value="<?php echo $order['name']; ?>">
         <input type="hidden" name="number" value="<?php echo $order['number']; ?>">
@@ -115,12 +194,14 @@ $conn->close();
         <input type="hidden" name="address" value="<?php echo $order['address']; ?>">
         <input type="hidden" name="total_products" value="<?php echo $order['total_products']; ?>">
         <input type="hidden" name="total_price" value="<?php echo $order['total_price']; ?>">
-         
         
         <button type="submit" class="btn btn-success" name="approve_order">Approve</button>
         <button type="submit" class="btn btn-danger" name="decline_order">Decline</button>
-        </form>
-    </div>
+    </form>
+
+</body>
+</html>
+
 <?php endforeach; ?>
 <?php else: ?>
     <p>No orders found.</p>

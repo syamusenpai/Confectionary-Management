@@ -19,7 +19,6 @@
 
 <body>
     <?php include '../include/user_header.php'; ?>
-
     <!-- Home section design -->
     <section class="home">
         <div class="home--text">
@@ -29,6 +28,9 @@
             <a href="kuih.php" class="btn">Explore now</a>
         </div>
     </section>
+    <br>
+    <br>
+    <br>
 
     <!-- Features section design -->
     <section>
@@ -42,7 +44,7 @@
                     <div class="row-text">
                         <h6>Explore new and wonderful treats</h6>
                         <h3>Give the gift <br> of choice</h3>
-                        <a href="" class="row-btn">Show me all</a>
+                        <a href="kuih.php" class="row-btn">Show me all</a>
                     </div>
                     <div class="row-img">
                         <img src="../img/d1.jpg" alt="Image 1">
@@ -56,7 +58,7 @@
                     <div class="row-text">
                         <h6>Explore new and wonderful treats</h6>
                         <h3>Give the gift <br> of choice</h3>
-                        <a href="" class="row-btn">Show me all</a>
+                        <a href="kuih.php" class="row-btn">Show me all</a>
                     </div>
                     <div class="row-img">
                         <img src="../img/d2.jpg" alt="Image 2">
@@ -70,7 +72,7 @@
                     <div class="row-text">
                         <h6>Explore new and wonderful treats</h6>
                         <h3>Give the gift <br> of choice</h3>
-                        <a href="" class="row-btn">Show me all</a>
+                        <a href="kuih.php" class="row-btn">Show me all</a>
                     </div>
                     <div class="row-img">
                         <img src="../img/d3.jpg" alt="Image 3">
@@ -82,64 +84,72 @@
 
     <!-- Product section design -->
     <section>
-        <div class="middle-text">
-            <h2>New treats.<span> Best selling of the month</span></h2>
+    <div class="middle-text">
+        <h2>New treats.<span> Best selling of the month</span></h2>
+    </div>
+
+    <div class="product-content">
+        <?php
+        // Database connection
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "aneka_2.0";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $res = mysqli_query($conn, "SELECT sd.product_id, p.name, p.image, sd.quantity FROM sales_detail2 sd
+                            INNER JOIN products p ON sd.product_id = p.id
+                            ORDER BY sd.quantity DESC
+                            LIMIT 3");
+
+        if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+                // Output product boxes dynamically
+                echo '<div class="box">';
+                echo '<div class="box-img">';
+                echo '<img src="../img/' . $row['image'] . '" alt="Product Image">';
+                echo '</div>';
+                echo '<br><h3>' . $row['name'] . '</h3>';
+                echo '<h4></h4>';
+                echo '<div class="inbox">';
+                echo '<a href="kuih.php" class="price">RM ' . $row['quantity'] . '</a>';
+                echo '</div>';
+                echo '<div class="heart">';
+                echo '<i class="ri-heart-fill"></i>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo "No products found.";
+        }
+
+        $conn->close();
+        ?>
+    </div>
+</section>
+<section class="cta-content">
+    <div class="cta">
+        <div class="cta-text">
+            <a href="" class="logo"><img src="../img/logo.png"></a>
+            <h3>Rare New Kuih thats never seen Before</h3>
+            <p>let the sweetness take you to another world</p>
+            <a href="kuih.php" class="btn">Discover more</a>
         </div>
-    
-        <div class="product-content">
-            <!-- Product Box 1 -->
-            <div class="box">
-                <div class="box-img">
-                    <img src="../img/d4.jpg" alt="Product Image 1">
-                </div>
-                <br><h3>Talam suji</h3>
-                <h4></h4>
-              <div class="inbox">
-                   <a href="" class="price">RM 20</a> 
-                     </div>
-                
-                <div class="heart">
-                    <i class="ri-heart-fill"></i>
-                </div>
-            </div>
-    
-            <!-- Product Box 2 -->
-            <div class="box">
-                <div class="box-img">
-                    <img src="../img/d5.jpg" alt="Product Image 2">
-                </div>
-                <br><h3>Talam suji</h3>
-                <h4></h4>
-                <div class="inbox">
-                    <a href="" class="price">RM 20</a>
-                </div>
-               
-                <div class="heart">
-                    <i class="ri-heart-fill"></i>
-                </div>
-            </div>
-    
-            <!-- Product Box 3 -->
-            <div class="box">
-                <div class="box-img">
-                    <img src="../img/d6.jpg" alt="Product Image 3">
-                </div>
-                <br><h3>Talam suji</h3>
-                <h4></h4>
-                <div class="inbox">
-                    <a href="" class="price">RM 20</a>
-                </div>
-              
-                <div class="heart">
-                    <i class="ri-heart-fill"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Custom js link -->
-    <script type="text/javascript" src="edit/script.js"></script>
-    
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>    
+<?php include '../include/user_footer.php'; ?>
+
 </body>
 
 </html>

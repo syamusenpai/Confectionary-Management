@@ -6,7 +6,7 @@ $editUserLink = "editUser.php";
 $editAdminLink = "editAdmin.php";
 
 // Your existing code for querying admins and users
-$queryAdmins = "SELECT id, name AS username, email, phone_number, 'admin' AS role FROM admins";
+$queryAdmins = "SELECT id,  username, email, phone_number, 'admin' AS role FROM admins";
 $resultAdmins = mysqli_query($dbc, $queryAdmins);
 
 $queryUsers = "SELECT id, username, email, phone_number, role FROM users";

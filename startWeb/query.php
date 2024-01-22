@@ -20,7 +20,61 @@
 
 <?php include '../include/user_header.php'; ?>
 
+<style>
+    .askquery {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+}
 
+.askquery h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.askquery p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.askquery form {
+  display: flex;
+  flex-direction: column;
+}
+
+.askquery label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.askquery input[type="text"],
+.askquery textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.askquery input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.askquery input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+</style>
+<br>
+<br>
+<br>
 
 <section class="askquery">
     <h1>Ask a Query</h1>
@@ -76,10 +130,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Close the database connection
 $dbc->close();
 ?>
-<section>
-<h1>Answered Queries</h1>
-</section>
-
 
 <?php
 $servername = "localhost";

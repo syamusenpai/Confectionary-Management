@@ -107,7 +107,7 @@
 
             while ($row = mysqli_fetch_assoc($result)) {
                 $productId = $row["id"];
-                $image = $row["image_01"];
+                $image = $row["image"];
                 $kuihName = $row["name"];
                 $quantity = $row["quantity"];
                 $kuihPrice = $row["price"];

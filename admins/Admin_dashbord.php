@@ -162,19 +162,22 @@
         $queryProducts = "SELECT COUNT(*) AS product_count FROM products";
         $queryCategories = "SELECT COUNT(*) AS category_count FROM product_categories";
         $queryCustomers = "SELECT COUNT(*) AS customer_count FROM users WHERE role = 'user'";
-        $queryAlerts = "SELECT COUNT(*) AS alert_count FROM orders WHERE payment_status = 'pending'";
+        $queryAlerts = "SELECT COUNT(*) AS alert_count FROM orders" ;
+        $AsksQuery = "SELECT COUNT(*) AS ask_query FROM user_queries";
 
         // Execute queries
         $resultProducts = mysqli_query($dbc, $queryProducts);
         $resultCategories = mysqli_query($dbc, $queryCategories);
         $resultCustomers = mysqli_query($dbc, $queryCustomers);
         $resultAlerts = mysqli_query($dbc, $queryAlerts);
+        $resultQuery =  mysqli_query($dbc,$AsksQuery);
 
         // Fetch data
         $productsCount = mysqli_fetch_assoc($resultProducts)['product_count'];
         $categoriesCount = mysqli_fetch_assoc($resultCategories)['category_count'];
         $customersCount = mysqli_fetch_assoc($resultCustomers)['customer_count'];
         $alertsCount = mysqli_fetch_assoc($resultAlerts)['alert_count'];
+        $queryCount = mysqli_fetch_assoc($resultQuery)['ask_query'];
 
         
 
@@ -190,6 +193,7 @@
                   <?php endif; ?>
               </div>
         <div class="main-cards">
+            
             <!-- Card for PRODUCTS -->
             <div class="card">
                 <div class="card-inner">
@@ -220,12 +224,22 @@
             <!-- Card for ALERTS -->
             <div class="card">
                 <div class="card-inner">
-                    <h3>ALERTS</h3>
+                    <h3>ORDER APPROVAL</h3>
                     <span class="material-icons-outlined">notification_important</span>
                 </div>
                 <h1><?php echo $alertsCount; ?></h1>
             </div>
+            
+            
         </div>
+            <!-- Card for ALERTS -->
+            <div class="card">
+                <div class="card-inner">
+                    <h3>Asked Query</h3>
+                    <span class="material-icons-outlined">notification_important</span>
+                </div>
+                <h1><?php echo $queryCount; ?></h1>
+            </div>
 
 
         <div class="charts">
@@ -252,7 +266,287 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-    <!-- Custom JS -->
-    <script src="../style/admin_script.js"></script>
-  </body>
+    <?php
+ 
+
+
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "aneka_2.0";
+ 
+ $dbc = new mysqli($servername, $username, $password, $dbname);
+ // Check the connection
+ if ($dbc->connect_error) {
+     die("Connection failed: " . $dbc->connect_error);
+ }
+ 
+ $test = array();
+ $count=0;
+ // Modify the query to order by quantity in descending order and limit to 5 rows
+ $res = mysqli_query($dbc, "SELECT sd.product_id, p.name, sd.quantity FROM sales_detail2 sd
+                            INNER JOIN products p ON sd.product_id = p.id
+                            ORDER BY sd.quantity DESC
+                            LIMIT 5");
+ 
+ while ($row = mysqli_fetch_array($res)) {
+     $test[$count]["label"] = $row["name"];
+     $test[$count]["y"] = $row["quantity"];
+     $count++;
+ }
+ $profitData = array();
+
+// Modify the query to select profit data from the sales table
+$resProfit = mysqli_query($dbc, "SELECT DATE_FORMAT(sale_date, '%b %d') as day_month, 
+                                  SUM(profit) as total_profit
+                                  FROM sales
+                                  GROUP BY DAY(sale_date)
+                                  ORDER BY DAY(sale_date)");
+
+$totalProfit = 0;
+
+while ($rowProfit = mysqli_fetch_array($resProfit)) {
+    $totalProfit += $rowProfit["total_profit"]; // Calculate running total
+    $profitData[] = array(
+        "label" => $rowProfit["day_month"],
+        "total" => $rowProfit["total_profit"],
+        "full" => $totalProfit // Running total represents full profits
+    );
+}
+
+ 
+ ?>
+
+ 
+ <script>
+     // Assuming $test is already defined in PHP
+     const categories = <?php echo json_encode(array_column($test, 'label')); ?>;
+     const dataPoints = <?php echo json_encode(array_column($test, 'y')); ?>;
+     
+     // Custom color scheme with 6 colors
+     const customColors = ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffbb00'];
+ 
+     // BAR CHART
+     const barChartOptions = {
+         series: [{
+             data: dataPoints,
+             name: 'Products',
+         }],
+         chart: {
+             type: 'bar',
+             background: 'transparent',
+             height: 350,
+             toolbar: {
+              show: false,
+             },
+         },
+         colors: customColors,
+         plotOptions: {
+             bar: {
+                 distributed: true,
+                 borderRadius: 4,
+                 horizontal: false,
+                 columnWidth: '40%',
+                 
+             },
+         },
+         dataLabels: {
+             enabled: false,
+         },
+         fill: {
+             opacity: 1,
+         },
+         grid: {
+             borderColor: '#55596e',
+             yaxis: {
+                 lines: {
+                     show: true,
+                 },
+             },
+             xaxis: {
+                 lines: {
+                     show: true,
+                 },
+             },
+         },
+         legend: {
+             labels: {
+                 colors: '#f5f7ff',
+             },
+             show: true,
+             position: 'top',
+         },
+         stroke: {
+             colors: ['transparent'],
+             show: true,
+             width: 2,
+         },
+         tooltip: {
+             shared: true,
+             intersect: false,
+             theme: 'dark',
+         },
+         xaxis: {
+             categories: categories,
+             title: {
+                 style: {
+                     color: '#f5f7ff',
+                 },
+             },
+             axisBorder: {
+                 show: true,
+                 color: '#55596e',
+             },
+             axisTicks: {
+                 show: true,
+                 color: '#55596e',
+             },
+             labels: {
+                 style: {
+                     colors: '#f5f7ff',
+                 },
+             },
+         },
+         yaxis: {
+             title: {
+                 text: 'Count',
+                 style: {
+                     color: '#f5f7ff',
+                 },
+             },
+             axisBorder: {
+                 color: '#55596e',
+                 show: true,
+             },
+             axisTicks: {
+                 color: '#55596e',
+                 show: true,
+             },
+             labels: {
+                 style: {
+                     colors: '#f5f7ff',
+                 },
+             },
+         },
+     };
+ 
+     const barChart = new ApexCharts(
+         document.querySelector('#bar-chart'),
+         barChartOptions
+     );
+     barChart.render();
+
+     //profits
+     const profitData = <?php echo json_encode($profitData); ?>;
+
+document.addEventListener('DOMContentLoaded', function () {
+    // AREA CHART
+  
+const areaChartOptions = {
+  chart: {
+        height: 350,
+        type: 'area',
+        zoom: {
+            enabled: false
+        },
+        grid: {
+            borderColor: '#000000', // Change this line
+            yaxis: {
+                lines: {
+                    show: true,
+                },
+            },
+            xaxis: {
+                lines: {
+                    show: true,
+                },
+            },
+        },
+    },
+    series: [{
+        name: 'Total Profits',
+        data: profitData.map(entry => ({ x: entry.label, y: entry.total })),
+    }],
+    tooltip: {
+    theme: "dark"
+  },
+    xaxis: {
+        type: 'category',
+        categories: profitData.map(entry => entry.label),
+        title: {
+                 style: {
+                     color: '#f5f7ff',
+                 },
+             },
+             axisBorder: {
+                 show: true,
+                 color: '#55596e',
+             },
+             axisTicks: {
+                 show: true,
+                 color: '#55596e',
+             },
+             labels: {
+                 style: {
+                     colors: '#f5f7ff',
+                 },
+             },
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    title: {
+        text: 'Profits Overview - Total: RM' + profitData.reduce((total, entry) => total + parseFloat(entry.total), 0).toFixed(2),
+        align: 'left',
+        style: {
+            color: '#ffffff', // Black color for title text
+        },
+    },
+    subtitle: {
+        text: 'Price Movements',
+        align: 'left',
+        style: {
+            color: '#ffffff', // Black color for subtitle text
+        },
+    },
+    labels: {
+        show: true,
+        formatter: function (val) {
+            return val.split(' ')[1]; // Display only the day
+        },
+        style: {
+            colors: '#ffffff', // Black color for label text
+        },
+    },
+    yaxis: {
+        opposite: true,
+        labels: {
+            style: {
+                colors: '#ffffff', // Black color for y-axis labels
+            },
+        },
+    },
+    legend: {
+        horizontalAlign: 'left',
+        labels: {
+            colors: '#ffffff', // Black color for legend text
+        },
+    }
+};
+
+
+    const areaChart = new ApexCharts(
+        document.querySelector('#area-chart'),
+        areaChartOptions
+    );
+    areaChart.render();
+});
+ </script>
+ 
+ </body>
+ </html>
+   </body>
 </html>

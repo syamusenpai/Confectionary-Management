@@ -44,7 +44,58 @@ mysqli_close($dbc);
     <?php if (!empty($msg)) : ?>
         <div style="color: green;"><?php echo $msg; ?></div>
     <?php endif; ?>
+<style>
+    /* Form Styles */
+form {
+  font-family: Verdana, sans-serif;
+  margin-bottom: 20px;
+}
 
+label {
+  font-weight: bold;
+}
+
+input[type="text"] {
+  border: 1px solid #ccc;
+  padding: 5px;
+  font-size: 14px;
+}
+
+input[type="submit"],
+input[type="reset"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+input[type="reset"] {
+  background-color: #f44336;
+}
+
+/* Additional Styles */
+.style1 {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.button {
+  background-color: #4CAF50;
+}
+
+.button2 {
+  background-color: #f44336;
+}
+
+</style>
     <!-- Form to add category -->
     <form name="insert" method="post" action="addCategory.php">
         <div>
@@ -71,6 +122,7 @@ mysqli_close($dbc);
     </ul>
 
     <br><br>
-    <a href="Admin_dashbord.php"><center>[Back to Add Kuih page]</center></a>
+    <a href="addKuih.php"><center>[Back to Add Kuih page]</center></a><p></p>
+    <a href="Admin_dashbord.php"><center>[Back to Add admin page]</center></a>
 </body>
 </html>

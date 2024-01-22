@@ -8,7 +8,7 @@ $result = mysqli_query($dbc, "SELECT * FROM product_categories");
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 if (isset($_POST['upload'])) {
-    $targetDir = "images/";
+    $targetDir = "img/";
     $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
     $kuihName = mysqli_real_escape_string($dbc, $_POST['kuihName']);
@@ -17,28 +17,27 @@ if (isset($_POST['upload'])) {
     $quantity = mysqli_real_escape_string($dbc, $_POST['quantity']);
     $selectedCategories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
-    $uploadedImages = [];
-    for ($i = 1; $i <= 3; $i++) {
-        $imageName = "image_" . $i;
-        $target = $targetDir . basename($_FILES[$imageName]['name']);
+    $uploadedImage = "";
+    $imageName = "image";
+    $target = $targetDir . basename($_FILES[$imageName]['name']);
 
-        if (!empty($_FILES[$imageName]['name'])) {
-            $imageExtension = strtolower(pathinfo($target, PATHINFO_EXTENSION));
+    if (!empty($_FILES[$imageName]['name'])) {
+        $imageExtension = strtolower(pathinfo($target, PATHINFO_EXTENSION));
 
-            if (in_array($imageExtension, $allowedExtensions)) {
-                $uploadedImages[$i] = $_FILES[$imageName]['name'];
-                move_uploaded_file($_FILES[$imageName]['tmp_name'], $target);
-            } else {
-                $msg = "Error: Only JPG, JPEG, and PNG files are allowed.";
-                break;
-            }
+        if (in_array($imageExtension, $allowedExtensions)) {
+            $uploadedImage = $_FILES[$imageName]['name'];
+            move_uploaded_file($_FILES[$imageName]['tmp_name'], $target);
+        } else {
+            $msg = "Error: Only JPG, JPEG, and PNG files are allowed.";
         }
     }
 
-    $sql = "INSERT INTO products (name, details, price, quantity, image_01, image_02, image_03) 
-            VALUES ('$kuihName', '$kuihDetails', '$kuihPrice', '$quantity', 
-                    '{$uploadedImages[1]}', '{$uploadedImages[2]}', '{$uploadedImages[3]}')";
-    mysqli_query($dbc, $sql);
+    $sql = "INSERT INTO products (name, details, price, quantity, image) 
+            VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = mysqli_prepare($dbc, $sql);
+    mysqli_stmt_bind_param($stmt, 'ssdss', $kuihName, $kuihDetails, $kuihPrice, $quantity, $uploadedImage);
+    mysqli_stmt_execute($stmt);
 
     $lastProductId = mysqli_insert_id($dbc);
 
@@ -56,10 +55,12 @@ if (isset($_POST['upload'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Add Kuih info</title>
+   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
 </head>
 <body>
@@ -72,19 +73,66 @@ if (isset($_POST['upload'])) {
     <?php if (!empty($msg)) : ?>
         <div style="color: green;"><?php echo $msg; ?></div>
     <?php endif; ?>
+<style>
+    .fr {
+  font-family: Verdana, sans-serif;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
+label {
+  font-weight: bold;
+}
+
+input[type="file"],
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 100px;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button2 {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+</style>
     <div class="fr">
         <form name="insert" method="post" action="addKuih.php" enctype="multipart/form-data" onsubmit="return validateForm()">
             <input type="hidden" name="size" value="1000000">
 
-            <!-- Repeat for up to three images -->
-            <?php for ($i = 1; $i <= 3; $i++) : ?>
-                <div>
-                    <label><font face="verdana">Image <?php echo $i; ?>:</label>
-                    <input type="file" name="image_<?php echo $i; ?>">
-                </div>
-                <br>
-            <?php endfor; ?>
+            <div>
+                <label><font face="verdana">Image:</label>
+                <input type="file" name="image">
+            </div>
+            <br>
 
             <div>
                 <label><font face="verdana">Kuih Name: </label><input type="text" name="kuihName" class="style1">
@@ -99,7 +147,6 @@ if (isset($_POST['upload'])) {
                 <label><font face="verdana">Quantity: </label><input type="text" name="quantity" class="style1">
             </div>
 
-            <!-- Add this code inside your form -->
             <div>
                 <label><font face="verdana">Select Categories: </label>
                 <select name="categories[]" class="style1 form-control" multiple id="categories">
@@ -120,7 +167,9 @@ if (isset($_POST['upload'])) {
         </form>
     </div>
     <br><br>
-    <a href="Admin_dashbord.php"><center>[Back to Kuih page]</center></a>
+    <a href="Admin_dashbord.php"><center>[Back to admin page]</center></a><p>
+    <a href="listKuih.php"><center>[Back to list kuih page]</center></a>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
