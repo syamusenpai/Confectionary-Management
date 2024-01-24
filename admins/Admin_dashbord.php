@@ -103,7 +103,7 @@
       <aside id="sidebar">
         <div class="sidebar-title">
           <div class="sidebar-brand">
-            <span class="material-icons-outlined">shopping_cart</span>Aneka Rasa Am 
+            <span class="material-icons-outlined">shopping_cart</span>Aneka Rasa 
           </div>
           <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
         </div>
@@ -245,7 +245,7 @@
         <div class="charts">
 
           <div class="charts-card">
-            <h2 class="chart-title">Top 5 Products</h2>
+            <h2 class="chart-title">Top Products</h2>
             <div id="bar-chart"></div>
           </div>
 
@@ -284,16 +284,19 @@
  $test = array();
  $count=0;
  // Modify the query to order by quantity in descending order and limit to 5 rows
- $res = mysqli_query($dbc, "SELECT sd.product_id, p.name, sd.quantity FROM sales_detail2 sd
+ $res = mysqli_query($dbc, "SELECT sd.product_id, p.name, SUM(sd.quantity) AS total_quantity FROM sales_details sd
                             INNER JOIN products p ON sd.product_id = p.id
-                            ORDER BY sd.quantity DESC
+                            GROUP BY sd.product_id, p.name
+                            ORDER BY total_quantity DESC
                             LIMIT 5");
  
  while ($row = mysqli_fetch_array($res)) {
      $test[$count]["label"] = $row["name"];
-     $test[$count]["y"] = $row["quantity"];
+     $test[$count]["y"] = $row["total_quantity"];
      $count++;
  }
+ 
+
  $profitData = array();
 
 // Modify the query to select profit data from the sales table
@@ -346,7 +349,7 @@ while ($rowProfit = mysqli_fetch_array($resProfit)) {
                  distributed: true,
                  borderRadius: 4,
                  horizontal: false,
-                 columnWidth: '40%',
+                 columnWidth: '30%',
                  
              },
          },

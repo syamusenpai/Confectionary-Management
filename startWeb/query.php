@@ -130,7 +130,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Close the database connection
 $dbc->close();
 ?>
+<style>
+  .bubble-chat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 300px;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
 
+.bubble-chat p {
+  margin: 0;
+  padding: 0;
+}
+
+.bubble-chat .name {
+  font-weight: bold;
+}
+
+.bubble-chat .query {
+  color: #555555;
+}
+
+.bubble-chat .answer {
+  color: #333333;
+}
+</style>
 <?php
 $servername = "localhost";
 $username = "root";
@@ -153,10 +181,10 @@ echo "<h1>Answered Queries</h1>";
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        echo "<div>";
-        echo "<p><strong>Name:</strong> " . $row['name'] . "</p>";
-        echo "<p><strong>Query:</strong> " . $row['query'] . "</p>";
-        echo "<p><strong>Answer:</strong> " . $row['answer'] . "</p>";
+        echo "<div class='bubble-chat'>";
+        echo "<p class='name'><strong>Name:</strong> " . $row['name'] . "</p>";
+        echo "<p class='query'><strong>Query:</strong> " . $row['query'] . "</p>";
+        echo "<p class='answer'><strong>Answer:</strong> " . $row['answer'] . "</p>";
         echo "</div>";
         echo "<br>";
     }
@@ -165,7 +193,6 @@ if ($result->num_rows > 0) {
 }
 
 echo "</section>";
-
 
 $dbc->close();
 ?>

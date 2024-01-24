@@ -23,14 +23,34 @@ if (isset($_POST['approve_order'])) {
     $address = $_POST['address'];
     $total_products = $_POST['total_products'];
     $total_price = $_POST['total_price'];
-    $proof_of_purchase = $_POST['proof_of_purchase'];
-    $profit = $total_products * $total_price;
+    $profit = $total_price;
 
-    // Insert approved order into the sales table
-    $query = "INSERT INTO sales (user_id, name, number, email, method, address, total_products, total_price, proof_of_purchase, profit)
-    VALUES ($userID, '$name', '$number', '$email', 'QR', '$address', '$total_products', $total_price, '$proof_of_purchase', $profit);";
-    
+    $query = "INSERT INTO sales (user_id, name, number, email, method, address, total_products, total_price, profit)
+              VALUES ($userID, '$name', '$number', '$email', 'QR', '$address', '$total_products', $total_price, $profit)";
+
+    // Execute the insertion query
     if ($conn->query($query) === TRUE) {
+        // Get the last inserted ID (sales ID)
+        $salesID = $conn->insert_id;
+
+        // Retrieve order details for the approved order
+        $orderDetailsQuery = "SELECT * FROM `order_details` WHERE user_id = '$userID'";
+        $orderDetailsResult = $conn->query($orderDetailsQuery);
+
+        if ($orderDetailsResult->num_rows > 0) {
+            while ($orderDetail = $orderDetailsResult->fetch_assoc()) {
+                // Insert order details into sales_details table
+                $salesDetailsQuery = "INSERT INTO sales_details (sales_id, product_id, quantity, price)
+                VALUES ($salesID, {$orderDetail['product_id']}, {$orderDetail['quantity']}, {$orderDetail['price']})";
+
+                if ($conn->query($salesDetailsQuery) !== TRUE) {
+                    echo "Error inserting order details into sales_details: " . $conn->error;
+                }
+            }
+        } else {
+            echo "No order details found.";
+        }
+
         // Delete the approved order from the order table
         $deleteQuery = "DELETE FROM `orders` WHERE user_id = '$userID'";
         if ($conn->query($deleteQuery) === TRUE) {
@@ -43,25 +63,9 @@ if (isset($_POST['approve_order'])) {
     } else {
         echo "Error inserting order into sales: " . $conn->error;
     }
-}
-
-// Check if the order decline form is submitted
-if (isset($_POST['decline_order'])) {
-    $userID = $_POST['user_id'];
-
-    // Delete the declined order from the order table
-    $deleteQuery = "DELETE FROM `orders` WHERE user_id = '$userID'";
-    if ($conn->query($deleteQuery) === TRUE) {
-        // Redirect to the Order Management page
-        header('Location: orderapproval.php');
-        exit();
-    } else {
-        echo "Error deleting order: " . $conn->error;
-    }
-}
+} 
 
 $sql = "SELECT * FROM `orders`";
-
 
 $result = $conn->query($sql);
 
@@ -81,6 +85,7 @@ if ($result->num_rows > 0) {
 // Close the database connection
 $conn->close();
 ?>
+
 
 <head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -180,9 +185,14 @@ $conn->close();
             <td><?php echo $order['total_price']; ?></td>
         </tr>
         <tr>
-            <td>Proof Note:</td>
-            <td><a href="view.php">View Proof</a></td>
-        </tr>
+        <tr>
+        <tr>
+    <td>Proof of Purchase:</td>
+    <td><a href="view.php?id=<?php echo $order['id']; ?>">show proof</a></td>
+</tr>
+
+
+
     </table>
 
     <!-- Approval/Decline Form -->

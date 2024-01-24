@@ -12,12 +12,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;0,900;1,500;1,800&display=swap" rel="stylesheet">
-    <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
-<script src="https://mediafiles.botpress.cloud/9eaba247-365c-4ff8-a4ac-a78c083a2143/webchat/config.js" defer></script>
+   
+
+
 </head>
 
 
 <body>
+
+
+<script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+<script>
+  window.botpressWebChat.init({
+      "composerPlaceholder": "Chat with Aneka Rasa Bot",
+      "botConversationDescription": "This bot will help you : )",
+      "botId": "9eaba247-365c-4ff8-a4ac-a78c083a2143",
+      "hostUrl": "https://cdn.botpress.cloud/webchat/v1",
+      "messagingUrl": "https://messaging.botpress.cloud",
+      "clientId": "9eaba247-365c-4ff8-a4ac-a78c083a2143",
+      "webhookId": "1ec209d1-63b9-4c0b-93cc-4faa5c3fd241",
+      "lazySocket": true,
+      "themeName": "prism",
+      "botName": "Aneka Rasa Bot",
+      "avatarUrl": "https://cdn1.iconfinder.com/data/icons/christmas-avatar-4/512/50-Christmas-Avatars-Icons_19-512.png",
+      "stylesheet": "https://webchat-styler-css.botpress.app/prod/code/66f7e764-6125-4f88-bbfa-a1f4f900013e/v70515/style.css",
+      "frontendVersion": "v1",
+      "theme": "prism",
+      "themeColor": "#2563eb"
+  });
+</script>
+
     <?php include '../include/user_header.php'; ?>
     <!-- Home section design -->
     <section class="home">
@@ -102,7 +126,7 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $res = mysqli_query($conn, "SELECT sd.product_id, p.name, p.image, sd.quantity FROM sales_detail2 sd
+        $res = mysqli_query($conn, "SELECT sd.product_id, p.name, p.image, sd.quantity FROM sales_details sd
                             INNER JOIN products p ON sd.product_id = p.id
                             ORDER BY sd.quantity DESC
                             LIMIT 3");

@@ -141,67 +141,68 @@ if (!empty($cartData)) {
 </body>
 </html>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $phoneNumber = $_POST["phoneNumber"];
-    $address = $_POST["address"];
-    $email = $_POST["email"];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = $_POST["name"];
+        $phoneNumber = $_POST["phoneNumber"];
+        $address = $_POST["address"];
+        $email = $_POST["email"];
 
-    // Retrieve user_id based on email
-    $userQuery = "SELECT id FROM users WHERE email = ?";
+        // Retrieve user_id based on email
+        $userQuery = "SELECT id FROM users WHERE email = ?";
 
-    $stmtUser = $conn->prepare($userQuery);
-    $stmtUser->bind_param("s", $email);
-    $stmtUser->execute();
-    $stmtUser->bind_result($user_id);
+        $stmtUser = $conn->prepare($userQuery);
+        $stmtUser->bind_param("s", $email);
+        $stmtUser->execute();
+        $stmtUser->bind_result($user_id);
 
-    // Fetch the user_id
-    if ($stmtUser->fetch()) {
-        // Additional data for the database
-        $method = "QR";
-        $placedOn = date("Y-m-d H:i:s");  // Current timestamp
-        $paymentStatus = "Pending";
+        // Fetch the user_id
+        if ($stmtUser->fetch()) {
+            // Additional data for the database
+            $method = "QR";
+            $placedOn = date("Y-m-d H:i:s");  // Current timestamp
+            $paymentStatus = "Pending";
 
-        // Calculate total products and total price based on your requirements
-        $totalProducts = array_sum(array_column($cartData, 'quantity'));
-        $totalPrice = array_sum(array_column($cartData, 'price'));
+            // Calculate total products and total price based on your requirements
+            $totalProducts = array_sum(array_column($cartData, 'quantity'));
+            $totalPrice = array_sum(array_column($cartData, 'price'));
 
-        // Read the content of the uploaded file
-        $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
-        $stmtUser->close();
+            // Read the content of the uploaded file
+            $fileContent = file_get_contents($_FILES["proofOfPurchase"]["tmp_name"]);
+            $stmtUser->close();
 
-        // Save the data to the database in the orders table
-        $sqlOrder = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
+            // Save the data to the database in the orders table
+            $sqlOrder = "INSERT INTO orders (user_id, name, number, email, method, address, total_products, total_price, placed_on, payment_status, proof_of_purchase) 
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $stmtOrder = $conn->prepare($sqlOrder);
-        $stmtOrder->bind_param("isssssiddbs", $user_id, $name, $phoneNumber, $email, $method, $address, $totalProducts, $totalPrice, $placedOn, $paymentStatus, $fileContent);
-        $stmtOrder->execute();
+            $stmtOrder = $conn->prepare($sqlOrder);
+            $stmtOrder->bind_param("isssssiddbs", $user_id, $name, $phoneNumber, $email, $method, $address, $totalProducts, $totalPrice, $placedOn, $paymentStatus, $fileContent);
+            $stmtOrder->execute();
+            $stmtOrder->close();
 
-        // Retrieve the generated order_id
-        $orderId = $stmtOrder->insert_id;
+            // Insert order details into the order_details table for each item in the cart
+            foreach ($cartData as $item) {
+                $productId = $item['id'];
+                $quantity = $item['quantity'];
+                $price = $item['price'];
 
-        $stmtOrder->close();
+                $sqlOrderDetails = "INSERT INTO order_details (user_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+                $stmtOrderDetails = $conn->prepare($sqlOrderDetails);
+                $stmtOrderDetails->bind_param("iiid", $user_id, $productId, $quantity, $price);
+                $stmtOrderDetails->execute();
+                $stmtOrderDetails->close();
+            }
 
-        // Insert order details into the order_details table for each item in the cart
-        foreach ($cartData as $item) {
-            $productId = $item['id'];
-            $quantity = $item['quantity'];
-            $price = $item['price'];
+            // Delete the items from the database based on some criteria
+            // For example, assuming you have a products table and want to delete items with a certain user_id
+           
 
-            $sqlOrderDetails = "INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
-            $stmtOrderDetails = $conn->prepare($sqlOrderDetails);
-            $stmtOrderDetails->bind_param("iiid", $orderId, $productId, $quantity, $price);
-            $stmtOrderDetails->execute();
-            $stmtOrderDetails->close();
+            echo "Order details with proof of purchase saved successfully!<br>";
+            echo "Order ID: $user_id<br>";
+        } else {
+            echo "User not found with the provided email.<br>";
         }
-
-        echo "Order details with proof of purchase saved successfully!<br>";
-        echo "Order ID: $orderId<br>";
-    } else {
-        echo "User not found with the provided email.<br>";
     }
-}
 ?>
+
 
 <a href="kuih.php" class="btn">Explore more?</a>
