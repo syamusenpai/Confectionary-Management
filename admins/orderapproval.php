@@ -25,6 +25,8 @@ if (isset($_POST['approve_order'])) {
     $total_price = $_POST['total_price'];
     $profit = $total_price;
 
+
+    
     $query = "INSERT INTO sales (user_id, name, number, email, method, address, total_products, total_price, profit)
               VALUES ($userID, '$name', '$number', '$email', 'QR', '$address', '$total_products', $total_price, $profit)";
 

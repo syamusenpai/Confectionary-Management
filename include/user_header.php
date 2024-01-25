@@ -72,12 +72,12 @@
                         }
 
                         echo '<hr>';
-                        echo '<a href="" class="sub-menu-link">';
+                        echo '<a href="../startweb/editprofile.php" class="sub-menu-link">';
                         echo '<img src="../img/edit profile.png">';
                         echo '<p>Edit profile</p>';
                         echo '<span>></span>';
                         echo '</a>';
-                        echo '<a href="" class="sub-menu-link">';
+                        echo '<a href="../startweb/order_history.php" class="sub-menu-link">';
                         echo '<img src="../img/order history.png">';
                         echo '<p>Order history</p>';
                         echo '<span>></span>';

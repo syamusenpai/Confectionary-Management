@@ -88,12 +88,11 @@ $phone_number = $row["phone_number"];
     </div>
     <br>
     <br>
-    <a href="profile.php"><center>[Back to profile page]</center></a>
+    <a href="profiles.php"><center>[Back to profile page]</center></a>
 
     <script>
         function validateForm() {
-            // Validation logic
-            // You can copy the validation function from your provided code
+            
         }
     </script>
 </body>

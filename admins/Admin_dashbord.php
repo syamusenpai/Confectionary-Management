@@ -235,7 +235,7 @@
             <!-- Card for ALERTS -->
             <div class="card">
                 <div class="card-inner">
-                    <h3>Asked Query</h3>
+                    <h3>ASKED QUERY</h3>
                     <span class="material-icons-outlined">notification_important</span>
                 </div>
                 <h1><?php echo $queryCount; ?></h1>
